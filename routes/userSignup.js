@@ -2,6 +2,8 @@ const express = require('express');
 
 const path = require('path');
 
+const bcrypt = require('bcrypt');
+
 const User = require('../utils/database');
 
 const router = express.Router();
@@ -14,23 +16,26 @@ router.post('/user/signup',(req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
     try {
-        User.create({
-            username: name,
-            email: email,
-            password: password
-        }).then(result => {
-            res.status(201).json(result)
-        }).catch((error) => {
-            res.status(405).json({
-                "message": 'User already exist'
-            })
-            console.error('Failed to create a new record : ', error);
-        });
-    } catch (error) {
-        res.status(405).json({
-            "message": "Failed to create user"
+        bcrypt.hash(password,10,(err,hashPass) => {
+            console.log(err);
+            User.create({
+                username: name,
+                email: email,
+                password: hashPass
+            }).then(result => {
+                res.status(201).json(result)
+            }).catch((error) => {
+                res.status(405).json({
+                    "message": 'User already exist'
+                })
+                console.error('Failed to create a new record : ', error);
+            });
         })
-    }
-})
+        } catch (error) {
+            res.status(405).json({
+                "message": "Failed to create user"
+            })
+        }
+    })
 
 module.exports = router;
