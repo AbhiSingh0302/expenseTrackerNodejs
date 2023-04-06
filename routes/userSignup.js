@@ -22,7 +22,7 @@ router.post('/user/signup',(req,res,next) => {
             res.status(201).json(result)
         }).catch((error) => {
             res.status(405).json({
-                "message": "Failed to create user"
+                "message": 'User already exist'
             })
             console.error('Failed to create a new record : ', error);
         });
