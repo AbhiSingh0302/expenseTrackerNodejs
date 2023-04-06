@@ -45,7 +45,12 @@
             <div class="input-field">
                 <label for="password">Enter Password</label>
                 <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-field">
                 <input type="submit">
+            </div>
+            <div class="input-field">
+                <p id="error"></p>
             </div>
         </form>
     </main>
@@ -59,7 +64,17 @@
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            });
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err)=>{
+                setTimeout(() => {
+                    document.getElementById('error').innerHTML = "";
+                },2000)
+                document.getElementById('error').innerHTML = err.response.data.message;
+                document.getElementById('error').style.color = "red";
+            })
     })
 </script>
 </html>
