@@ -32,6 +32,8 @@ router.post('/login/user', async (req, res, next) => {
                             "message": "User successfully logged in",
                             "data": user
                         })
+                        console.log('hellow');
+                        // return res.redirect('/login/expense');
                     }
                     else{
                         res.status(401).json({
