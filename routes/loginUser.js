@@ -24,14 +24,14 @@ router.post('/login/user',async (req,res,next) => {
                 "data": user
             })
         }else{
-            res.status(406).json({
+            res.status(401).json({
                 "message": "Password is incorrect",
             })
         }
     }
     else{
-        res.status(406).json({
-            "message": "User not exist",
+        res.status(404).json({
+            "message": "User not found",
         })
     }
 })
