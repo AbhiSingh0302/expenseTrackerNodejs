@@ -10,11 +10,15 @@ const userSignUp = require('./routes/userSignup');
 
 const loginRouter = require('./routes/login');
 
+const loginUserRouter = require('./routes/loginUser');
+
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use(userSignUp);
+
+app.use(loginUserRouter);
 
 app.use(loginRouter);
 

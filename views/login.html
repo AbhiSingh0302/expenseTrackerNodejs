@@ -61,11 +61,17 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then((res) => {
-                console.log(res);
+            .then((result) => {
+                console.log(result.data);
+                alert(result.data.message);
             })
             .catch((err)=>{
                 console.log(err);
+                setTimeout(() => {
+                    document.getElementById('error').innerHTML = "";
+                },2000)
+                document.getElementById('error').innerHTML = err.response.data.message;
+                document.getElementById('error').style.color = "red";
             })
     })
 </script>
