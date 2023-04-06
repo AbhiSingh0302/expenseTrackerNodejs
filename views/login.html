@@ -30,14 +30,10 @@
 
 <body>
     <header>
-        <h1>Sign Up</h1>
+        <h1>Log In</h1>
     </header>
     <main>
         <form>
-            <div class="input-field">
-                <label for="name">Enter your name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
             <div class="input-field">
                 <label for="email">Enter your email</label>
                 <input type="email" id="email" name="email" required>
@@ -45,9 +41,6 @@
             <div class="input-field">
                 <label for="password">Enter Password</label>
                 <input type="password" id="password" name="password" required>
-            </div>
-            <div class="input-field">
-                <a href="/login">Already User</a>
             </div>
             <div class="input-field">
                 <input type="submit">
@@ -63,7 +56,7 @@
     const form = document.querySelector('form');
     form.addEventListener('submit',(e)=>{
         e.preventDefault();
-        axios.post('/user/signup',form,{
+        axios.post('/login/user',form,{
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -72,11 +65,7 @@
                 console.log(res);
             })
             .catch((err)=>{
-                setTimeout(() => {
-                    document.getElementById('error').innerHTML = "";
-                },2000)
-                document.getElementById('error').innerHTML = err.response.data.message;
-                document.getElementById('error').style.color = "red";
+                console.log(err);
             })
     })
 </script>
