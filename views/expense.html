@@ -69,10 +69,11 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
 <script>
+    console.log(window.location.href);
     const ul = document.querySelector('ul');
     const form = document.querySelector('form');
     window.onload = () => {
-        axios.get('http://localhost:3600/login/expense/all')
+        axios.get('http://localhost:3600/expense/all')
         .then(result => {
             console.log(result.data);
             getExpense(result.data)
@@ -89,16 +90,17 @@
             ${expense.category} <button id=${expense.id}>Delete<button>`;
             li.id = `li-${expense.id}`;
             ul.appendChild(li);
-            document.getElementById(expense.id).onclick = () => {
-                removeExpense(expense.id);
+            document.getElementById(expense.id).onclick = (e) => {
+                removeExpense(e.target.id);
             };
         }
     }
     function removeExpense(id){
-        axios.post(`http://localhost:3600/login/expense/${id}`)
+        axios.post(`http://localhost:3600/expense/user/${id}`)
         .then(result => {
             console.log(result);
-            document.getElementById(`li-${id}`).remove();
+            let i = result.data.id;
+            document.getElementById(`li-${i}`).remove();
         })
         .catch(err => {
             console.log(err);
@@ -107,8 +109,9 @@
     }
     form.addEventListener('submit',(e)=>{
         e.preventDefault();
+        let id_manager = localStorage.getItem('id_manager');
         console.log('hello');
-            axios.post('http://localhost:3600/login/expense',form,{
+            axios.post('http://localhost:3600/expense/create/'+id_manager,form,{
                     headers: {
                         'Content-Type': 'application/json'
                     }

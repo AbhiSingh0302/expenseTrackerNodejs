@@ -1,16 +1,14 @@
-const express = require('express');
-
 const path = require('path');
 
 const bcrypt = require('bcrypt');
 
-const User = require('../utils/database');
+const User = require('../models/user');
 
-const router = express.Router();
+exports.signupPage = (req,res,next) => {
+    res.sendFile(path.resolve('index.html'));
+}
 
-console.log(path.resolve('index.html'))
-
-router.post('/user/signup',(req,res,next) => {
+exports.userSignup = (req,res,next) => {
     console.log(req.body);
     const name = req.body.name;
     const email = req.body.email;
@@ -36,6 +34,4 @@ router.post('/user/signup',(req,res,next) => {
                 "message": "Failed to create user"
             })
         }
-    })
-
-module.exports = router;
+    }

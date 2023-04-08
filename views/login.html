@@ -65,11 +65,12 @@
                 }
             })
             .then((result) => {
-                console.log(result.data);
-                alert(result.data.message);
+                console.log(result.data.data.id);
+                alert("User successfully logged in");
                 document.querySelector('#email').value = "";
                 document.getElementById('password').value = "";
-                window.location.href = "http://127.0.0.1:5500/views/expense.html";
+                localStorage.setItem('id_manager',result.data.data.id);
+                expensePage();      
             })
             .catch((err)=>{
                 console.log(err);
@@ -82,5 +83,8 @@
                 document.getElementById('password').value = "";
             })
     })
+    function expensePage (){
+        window.location.href = "/expense";
+    }
 </script>
 </html>

@@ -1,13 +1,11 @@
 const express = require('express');
 
-const path = require('path');
+const signUpRouter = require('../controller/signup');
 
 const router = express.Router();
 
-console.log(path.resolve('index.html'))
+router.post('/signup',signUpRouter.userSignup);
 
-router.get('/',(req,res,next) => {
-    res.sendFile(path.resolve('index.html'));
-})
+router.get('/',signUpRouter.signupPage);
 
 module.exports = router;

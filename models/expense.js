@@ -1,12 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('expense','root','password',{
-    host: 'localhost',
-    dialect: 'mysql'
-});
+const sequelize = require('../utils/database');
 
-const expense = sequelize.define("userexpenses", {
-    
+const expense = sequelize.define("userexpenses", { 
     amount: {
       type: Sequelize.DataTypes.INTEGER,
       allowNull: false

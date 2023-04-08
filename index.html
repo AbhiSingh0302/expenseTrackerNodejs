@@ -63,7 +63,7 @@
     const form = document.querySelector('form');
     form.addEventListener('submit',(e)=>{
         e.preventDefault();
-        axios.post('/user/signup',form,{
+        axios.post('/signup',form,{
                 headers: {
                     'Content-Type': 'application/json'
                 }
