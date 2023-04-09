@@ -65,11 +65,11 @@
                 }
             })
             .then((result) => {
-                console.log(result.data.data.id);
+                console.log(result.data.token);
                 alert("User successfully logged in");
                 document.querySelector('#email').value = "";
                 document.getElementById('password').value = "";
-                localStorage.setItem('id_manager',result.data.data.id);
+                localStorage.setItem('token',result.data.token);
                 expensePage();      
             })
             .catch((err)=>{

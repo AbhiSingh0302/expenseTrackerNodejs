@@ -73,7 +73,11 @@
     const ul = document.querySelector('ul');
     const form = document.querySelector('form');
     window.onload = () => {
-        axios.get('http://localhost:3600/expense/all')
+        axios.get('http://localhost:3600/expense/all',{
+            headers: {
+                'token': localStorage.getItem('token')
+            }
+        })
         .then(result => {
             console.log(result.data);
             getExpense(result.data)

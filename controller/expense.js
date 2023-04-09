@@ -8,8 +8,13 @@ exports.expensePage = (req,res,next) => {
 }
 
 exports.expenseAll = (req,res,next) => {
+    console.log(req.headers.expenseid);
     try {
-        expense.findAll()
+        expense.findAll({
+            where:{
+                'expenseId': req.headers.expenseid
+            }
+        })
         .then(exp => {
             res.status(201).json(exp)
         })
@@ -30,6 +35,7 @@ exports.expenseCreate = (req,res,next) => {
             'amount': req.body.amount,
             'description': req.body.description,
             'category': req.body.category,
+            'expenseId': req.params.userId
         })
         .then(exp => {
             res.status(201).json(exp)

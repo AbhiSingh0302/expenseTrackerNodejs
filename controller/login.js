@@ -2,7 +2,13 @@ const path = require('path');
 
 const bcrypt = require('bcrypt');
 
+const jwt = require('jsonwebtoken');
+
 const User = require('../models/user');
+
+function generateWebTokens(id){
+    return jwt.sign({userId: id},"12345");
+}
 
 exports.loginPage = (req,res,next) => {
     res.sendFile(path.join(__dirname,'../','views','login.html'));
@@ -28,11 +34,9 @@ exports.userLogin = async (req, res, next) => {
                     if (result) {
                         res.status(200).json({
                             "message": "User successfully logged in",
-                            "data": user
+                            "token": generateWebTokens(user.id)
                         })
                         console.log('hellow');
-                        // return res.redirect('/expense/useri');
-                        // return res.redirect('/login/expense');
                     }
                     else{
                         res.status(401).json({
