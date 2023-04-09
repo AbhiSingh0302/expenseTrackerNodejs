@@ -113,11 +113,10 @@
     }
     form.addEventListener('submit',(e)=>{
         e.preventDefault();
-        let id_manager = localStorage.getItem('id_manager');
-        console.log('hello');
-            axios.post('http://localhost:3600/expense/create/'+id_manager,form,{
+            axios.post('http://localhost:3600/expense/create',form,{
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'token': localStorage.getItem('token')
                     }
                 })
             .then((result) => {

@@ -28,14 +28,12 @@ exports.expenseAll = (req,res,next) => {
 }
 
 exports.expenseCreate = (req,res,next) => {
-    console.log("login/expense: ",req.body);
-    console.log(req.params.userId);
     try {
         expense.create({
             'amount': req.body.amount,
             'description': req.body.description,
             'category': req.body.category,
-            'expenseId': req.params.userId
+            'expenseId': req.headers.expenseid
         })
         .then(exp => {
             res.status(201).json(exp)
