@@ -59,6 +59,9 @@
                 <input type="submit">
             </div>
             <div class="input-field">
+                <input type="button" id="razorpay" value="Buy Premium">
+            </div>
+            <div class="input-field">
                 <p id="error"></p>
             </div>
         </form>
@@ -67,11 +70,13 @@
 
     </ul>
 </body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
 <script>
     console.log(window.location.href);
     const ul = document.querySelector('ul');
     const form = document.querySelector('form');
+    const razorpay = document.getElementById('razorpay');
     window.onload = () => {
         axios.get('http://localhost:3600/expense/all',{
             headers: {
@@ -136,6 +141,36 @@
                 document.querySelector('#amount').value = "";
                 document.getElementById('des').value = "";
             })
-    })
+        })
+        razorpay.addEventListener('click',() => {
+            axios.get('/get-premium',{
+            headers: {
+                'token': localStorage.getItem('token')
+            }
+            })
+            .then(resp => {
+                console.log(resp);
+                rzpPayment(resp.data);
+            })
+            .catch(err => {
+                console.log("Error: ",err)
+            })
+        })
+        function rzpPayment(data){
+            var options = {
+                "key": 'rzp_test_711AzTPXRhTp3e',
+                'order_id': data.order_id,
+                'handler': (result) => {
+                    alert('Payment Successful');
+                }
+            }
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+            rzp1.on('payment.failed',(res) => {
+                // axios.post('/get-premium/success',)
+                console.log("res",res);
+                alert(res.description);
+            })
+        }
 </script>
 </html>

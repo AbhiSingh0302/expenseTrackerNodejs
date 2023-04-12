@@ -10,9 +10,13 @@ const loginRouter = require('./routes/login');
 
 const expenseUserRouter = require('./routes/userexpense');
 
+const premiumRouter = require('./routes/premium');
+
 const User = require('./models/user');
 
 const Expense = require('./models/expense');
+
+const Order = require('./models/order');
 
 const sequelize = require('./utils/database');
 
@@ -22,11 +26,15 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use(signUpRouter);
 
 Expense.belongsTo(User);
 User.hasMany(Expense);
 
+User.hasMany(Order);
+Order.belongsTo(User);
+
+app.use(premiumRouter);
+
 app.use(expenseUserRouter);
 
 app.use(expenseUserRouter);
@@ -38,6 +46,8 @@ app.use(expenseUserRouter);
 app.use(loginRouter);
 
 app.use(loginRouter);
+
+app.use(signUpRouter);
 
 app.use(signUpRouter);
 
