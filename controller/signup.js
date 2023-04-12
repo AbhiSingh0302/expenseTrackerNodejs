@@ -19,7 +19,8 @@ exports.userSignup = (req,res,next) => {
             User.create({
                 username: name,
                 email: email,
-                password: hashPass
+                password: hashPass,
+                isPremium: false
             }).then(result => {
                 res.status(201).json(result)
             }).catch((error) => {

@@ -37,17 +37,7 @@ app.use(premiumRouter);
 
 app.use(expenseUserRouter);
 
-app.use(expenseUserRouter);
-
-app.use(expenseUserRouter);
-
-app.use(expenseUserRouter);
-
 app.use(loginRouter);
-
-app.use(loginRouter);
-
-app.use(signUpRouter);
 
 app.use(signUpRouter);
 

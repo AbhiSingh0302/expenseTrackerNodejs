@@ -15,6 +15,9 @@ const user = sequelize.define("expenses", {
     password: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false
+    },
+    isPremium: {
+        type: Sequelize.DataTypes.BOOLEAN
     }
  },{
     timestamps: false

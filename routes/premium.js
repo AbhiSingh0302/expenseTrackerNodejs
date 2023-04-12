@@ -2,10 +2,12 @@ const express = require('express');
 
 const PremiumController = require('../controller/premium');
 
-const expenseMiddleware = require('../middleware/auth');
+const premiumMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/get-premium',expenseMiddleware.authorization,PremiumController.getPremium);
+router.get('/get-premium',premiumMiddleware.authorization,PremiumController.getPremium);
+
+router.post('/get-premium/payment',PremiumController.updatePayment);
 
 module.exports = router;

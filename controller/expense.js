@@ -1,5 +1,5 @@
 const path = require('path');
-
+const User = require('../models/user');
 const expense = require('../models/expense');
 
 exports.expensePage = (req,res,next) => {
@@ -16,7 +16,27 @@ exports.expenseAll = (req,res,next) => {
             }
         })
         .then(exp => {
-            res.status(201).json(exp)
+            User.findOne({
+                where:{
+                    id: req.headers.expenseid
+                }
+            })
+            .then((user) => {
+                if(user.isPremium){
+                    res.status(201).json({
+                        'isPremium': true,
+                        'result': exp
+                    })
+                }else{
+                    res.status(201).json({
+                        'isPremium': false,
+                        'result': exp
+                    })
+                }
+            })
+            .catch(err => {
+                throw new Error('Something is not right',err);
+            })
         })
         .catch((error) => {
             console.error('Failed to create a new record : ', error);

@@ -19,14 +19,20 @@
             margin-bottom: 2rem;
             color: #3b556c;
         }
-        form{
+
+        form {
             text-align: center;
         }
-        .input-field{
+
+        .input-field {
             margin-bottom: 1rem;
         }
-        ul{
+
+        ul {
             list-style: none;
+        }
+        #razorpay{
+            display: none;
         }
     </style>
 </head>
@@ -78,21 +84,24 @@
     const form = document.querySelector('form');
     const razorpay = document.getElementById('razorpay');
     window.onload = () => {
-        axios.get('http://localhost:3600/expense/all',{
+        axios.get('http://localhost:3600/expense/all', {
             headers: {
                 'token': localStorage.getItem('token')
             }
         })
-        .then(result => {
-            console.log(result.data);
-            getExpense(result.data)
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(result => {
+                console.log(result.data.result);
+                getExpense(result.data.result);
+                if(!result.data.isPremium){
+                    razorpay.style.display = 'inline';
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
     };
-    function getExpense(expenses){
-        for(expense of expenses){
+    function getExpense(expenses) {
+        for (expense of expenses) {
             let li = document.createElement('li');
             li.innerHTML = `${expense.amount} Rs of 
             ${expense.description} in the category of 
@@ -104,26 +113,26 @@
             };
         }
     }
-    function removeExpense(id){
+    function removeExpense(id) {
         axios.post(`http://localhost:3600/expense/user/${id}`)
-        .then(result => {
-            console.log(result);
-            let i = result.data.id;
-            document.getElementById(`li-${i}`).remove();
-        })
-        .catch(err => {
-            console.log(err);
-            alert('something went wrong');
-        })
+            .then(result => {
+                console.log(result);
+                let i = result.data.id;
+                document.getElementById(`li-${i}`).remove();
+            })
+            .catch(err => {
+                console.log(err);
+                alert('something went wrong');
+            })
     }
-    form.addEventListener('submit',(e)=>{
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-            axios.post('http://localhost:3600/expense/create',form,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'token': localStorage.getItem('token')
-                    }
-                })
+        axios.post('http://localhost:3600/expense/create', form, {
+            headers: {
+                'Content-Type': 'application/json',
+                'token': localStorage.getItem('token')
+            }
+        })
             .then((result) => {
                 console.log(result.data);
                 getExpense([result.data])
@@ -131,46 +140,54 @@
                 document.querySelector('#amount').value = "";
                 document.getElementById('des').value = "";
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.log(err);
                 setTimeout(() => {
                     document.getElementById('error').innerHTML = "";
-                },2000)
+                }, 2000)
                 document.getElementById('error').innerHTML = err.response.data.message;
                 document.getElementById('error').style.color = "red";
                 document.querySelector('#amount').value = "";
                 document.getElementById('des').value = "";
             })
-        })
-        razorpay.addEventListener('click',() => {
-            axios.get('/get-premium',{
+    })
+    razorpay.addEventListener('click', () => {
+        axios.get('/get-premium', {
             headers: {
                 'token': localStorage.getItem('token')
             }
-            })
+        })
             .then(resp => {
                 console.log(resp);
                 rzpPayment(resp.data);
             })
             .catch(err => {
-                console.log("Error: ",err)
+                console.log("Error: ", err)
             })
-        })
-        function rzpPayment(data){
-            var options = {
-                "key": 'rzp_test_711AzTPXRhTp3e',
-                'order_id': data.order_id,
-                'handler': (result) => {
-                    alert('Payment Successful');
-                }
+    })
+    function rzpPayment(data) {
+        var options = {
+            "key": 'rzp_test_711AzTPXRhTp3e',
+            'order_id': data.order_id,
+            'handler': (payment) => {
+                console.log(payment);
+                paymentStatus(payment);
             }
-            const rzp1 = new Razorpay(options);
-            rzp1.open();
-            rzp1.on('payment.failed',(res) => {
-                // axios.post('/get-premium/success',)
-                console.log("res",res);
-                alert(res.description);
-            })
         }
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+        rzp1.on('payment.failed', (failed) => {
+            console.log(failed.error.metadata);
+            paymentStatus(failed.error.metadata);
+        })
+    }
+    function paymentStatus(payment) {
+        axios.post('/get-premium/payment', payment, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
 </script>
+
 </html>
