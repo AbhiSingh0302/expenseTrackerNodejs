@@ -26,8 +26,15 @@ licategory.forEach(el => {
     
 })
 const razorpay = document.getElementById('razorpay');
+const premiumUser = document.getElementById('premiumUser');
+const leaderboard = document.getElementById('leaderboard');
+const formDiv = document.getElementById('form-div');
+const ulExpDiv = document.getElementById('ulExp-div');
+const leaderboardDiv = document.getElementById('leaderboard-container');
+const ulLeaderboard = document.getElementById('leaderboard-ul');
 window.onload = () => {
     onLoadGet();
+    getLeaderboard();
 }
 function onLoadGet(){
     axios.get('http://localhost:3500/expense/all', {
@@ -40,6 +47,9 @@ function onLoadGet(){
             getExpense(result.data.result);
             if(!result.data.isPremium){
                 razorpay.style.display = 'inline';
+            }else{
+                premiumUser.style.display = 'inline';
+                leaderboard.style.display = 'inline';
             }
         })
         .catch(err => {
@@ -139,10 +149,19 @@ razorpay.addEventListener('click', () => {
         }
     })
         .then(resp => {
-            rzpPayment(resp.data);
+            if(resp.data){
+                rzpPayment(resp.data);
+            }else{
+                alert('Please try again');
+            }
         })
         .catch(err => {
-            console.log("Error: ", err)
+            if(err.response){
+                console.log("Error: ", err.response.data.error.description);
+                alert('Something is wrong in API')
+            }else{
+                alert('Something is wrong')
+            }
         })
 })
 function rzpPayment(data) {
@@ -167,8 +186,55 @@ function paymentStatus(payment) {
             'Content-Type': 'application/json'
         }
     })
+    .then(resp => {
+        console.log(resp);
+        razorpay.style.display = 'none';
+        premiumUser.style.display = 'inline';
+        leaderboard.style.display = 'inline';
+    })
+    .catch(err => {
+        console.log(err);
+    })
 }
-document.querySelector('.canvas').style.display = 'none';
+leaderboard.onclick = () => {
+    if(leaderboardDiv.style.display === "block"){
+        formDiv.style.width = "55%";
+        ulExpDiv.style.width = "35%";
+        leaderboardDiv.style.display = "none";
+    }else {
+        formDiv.style.width = "40%";
+        ulExpDiv.style.width = "25%";
+        leaderboardDiv.style.display = "block";
+    }
+}
+ async function getLeaderboard(){
+    try {
+    const leaderBoardList = await axios.get('/premium/show-leaderboard');
+    // ulLeaderboard.children.remove();
+    const respList = [];
+    for(let data of leaderBoardList.data){
+        const allExp = JSON.parse(data.expenses);
+        let totalAmount = 0;
+        for(let amountData of allExp){
+            totalAmount += +amountData.amount;
+        }
+        respList.push({
+            'username': data.user,
+            'total': totalAmount
+        })
+    }
+    respList.sort((a,b) => {
+        return b.total - a.total
+    })
+    respList.forEach(element => {
+        let li = document.createElement('li');
+        li.innerHTML = `${element.username} spends in total of ${element.total} Rs`;
+        ulLeaderboard.appendChild(li);
+    })
+} catch (error) {
+        console.log(error);
+}
+}
 setTimeout(() => {
     document.querySelector('.center-body').style.display = 'none';
     document.querySelector('.canvas').style.display = 'block';

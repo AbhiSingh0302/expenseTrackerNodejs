@@ -111,7 +111,7 @@
             margin-top: 1rem;
         }
 
-        #ulExp {
+        .ulStyle {
             text-align: center;
             background-color: #676872d4;
             /* width: 35%; */
@@ -122,16 +122,25 @@
             overflow: auto;
         }
 
-        #ulExp li {
+        .ulStyle li {
             margin: 2px 0;
             padding: 2px;
             color: white;
         }
-        #ulExp li:not(:last-child){
+        .ulStyle li:not(:last-child){
             border-bottom: 1px solid #b4ffad;
         }
 
-        #razorpay {
+        #razorpay,#premiumUser,#leaderboard {
+            display: none;
+        }
+        #leaderboard-container{
+            height: 20vh;
+            width: 25%;
+            max-height: 40vh;
+            background-color: #009688;
+            padding: 5px 0px;
+            border-radius: 15px;
             display: none;
         }
         /*Loader*/
@@ -205,7 +214,7 @@
         </div>
         <div class="flex">
 
-            <div style="width: 55%;">
+            <div style="width: 55%;" id="form-div">
                 <form>
                     <div class="input-field">
                         <label for="amount">Expense Amount</label>
@@ -253,16 +262,23 @@
                         <input type="submit">
                     </div>
                     <div class="input-field">
-                        <input type="button" id="razorpay" value="Buy Premium">
-                    </div>
-                    <div class="input-field">
                         <p id="error"></p>
                     </div>
                 </form>
+                <div class="input-field">
+                    <input type="button" id="razorpay" value="Buy Premium">
+                    <p id="premiumUser" style="color: #e3ffcf; font-size: 20px;">You are a premium user 😊</p>
+                    <button id="leaderboard" class="lBoard"> Leaderboard </button>
+                </div>
             </div>
-            <div style="width: 38%;">
-                <ul id="ulExp">
+            <div style="width: 38%;" id="ulExp-div">
+                <ul id="ulExp" class="ulStyle">
 
+                </ul>
+            </div>
+            <div id="leaderboard-container">
+                <ul id="leaderboard-ul" class="ulStyle">
+                    <li><h2>Leaderboard</h2></li>
                 </ul>
             </div>
         </div>
