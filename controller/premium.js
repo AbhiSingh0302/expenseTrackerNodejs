@@ -5,6 +5,7 @@ const Razorpay = require('razorpay');
 require('dotenv').config();
 
 exports.getPremium = (req, res, next) => {
+    console.log(req.headers.expenseid);
     try {
         console.log('hello premium', req.headers.expenseid);
         var instance = new Razorpay({
@@ -16,26 +17,33 @@ exports.getPremium = (req, res, next) => {
             "currency": "INR"
         }, (err, order) => {
             if (err) {
+                console.log('err in order: ',err);
                 res.json({
                     "error": err
                 });
             }
             else {
-                console.log(order);
+                console.log("order: ",order);
                 Order.create({
                     order_id: order.id,
                     status: 'PENDING',
                     expenseId: req.headers.expenseid
                 })
                     .then(data => {
-                        res.json(data);
+                        console.log('data in Order: ',data);
+                        res.json({
+                            'order': data,
+                            'rzpid': process.env.key_id
+                        });
                     })
                     .catch(err => {
+                        console.log('err in Order: ',err);
                         console.log(err);
                     })
             }
         })
     } catch (error) {
+        console.log('catch error: ',err);
         res.status(404).json(error);
     }
 }

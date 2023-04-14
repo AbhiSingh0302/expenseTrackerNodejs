@@ -2,6 +2,8 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
+const path = require('path');
+
 const cors = require('cors');
 
 const signUpRouter = require('./routes/signup');
@@ -26,6 +28,8 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+app.use(express.static(path.join('public')));
+
 
 Expense.belongsTo(User);
 User.hasMany(Expense);
@@ -43,7 +47,7 @@ app.use(signUpRouter);
 
 sequelize.sync()
 .then(() =>{
-    app.listen(3600);
+    app.listen(3500);
 })
 .catch((err) => {
     console.log(err);

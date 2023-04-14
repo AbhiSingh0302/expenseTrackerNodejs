@@ -10,7 +10,6 @@ const expense = sequelize.define("userexpenses", {
     description: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
-        unique: true
     },
     category: {
         type: Sequelize.DataTypes.STRING,

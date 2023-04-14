@@ -12,16 +12,67 @@
             padding: 0;
         }
 
+        body {
+            background-image: url('https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            font-family: 'Anuphan', sans-serif;
+        }
+
         header {
             text-align: center;
-            background-color: aquamarine;
+            background-color: #64aaef;
             padding: 10px;
             margin-bottom: 2rem;
-            color: #3b556c;
+            color: white;
         }
 
         form {
             text-align: center;
+            background-color: #babccf9c;
+            padding: 25px 0px;
+            margin-left: 1.5rem;
+            border-radius: 15px;
+        }
+
+        a {
+            color: #ffc710;
+        }
+
+        a:hover {
+            color: #3b556c;
+        }
+
+        input[type="submit"] {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #546876;
+            color: white;
+            font-size: 15px;
+        }
+
+        input[type="submit"]:hover {
+            color: black;
+            background-color: aliceblue;
+            cursor: pointer;
+        }
+
+        input,
+        select {
+            padding: 3px;
+        }
+
+        button {
+            padding: 3px;
+            border-radius: 5px;
+            margin-left: 1rem;
+            background-color: #ffbee1;
+        }
+
+        label {
+            color: white;
+            font-size: 17px;
+            margin-right: 5px;
         }
 
         .input-field {
@@ -31,9 +82,113 @@
         ul {
             list-style: none;
         }
-        #razorpay{
+
+        #category {
+            display: flex;
+            justify-content: space-around;
+            margin: 8px 0;
+            height: 5rem;
+        }
+
+        #category li:hover {
+            transform: scale(1.2, 1.2);
+            transition: 0.4s ease-in-out;
+            cursor: pointer;
+        }
+
+        #category li img:active {
+            border-radius: 20px;
+            transform: rotate(10deg);
+        }
+
+        img {
+            border-radius: 7px;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 1rem;
+        }
+
+        #ulExp {
+            text-align: center;
+            background-color: #676872d4;
+            /* width: 35%; */
+            padding: 5px 0px;
+            border-radius: 15px;
+            min-height: 20vh;
+            max-height: 40vh;
+            overflow: auto;
+        }
+
+        #ulExp li {
+            margin: 2px 0;
+            padding: 2px;
+            color: white;
+        }
+        #ulExp li:not(:last-child){
+            border-bottom: 1px solid #b4ffad;
+        }
+
+        #razorpay {
             display: none;
         }
+        /*Loader*/
+        .center-body {
+	text-align: center;
+}
+.loader-circle-2 {
+	position: relative;
+	width: 70px;
+	height: 70px;
+	display: inline-block;
+}
+.loader-circle-2:before,
+.loader-circle-2:after {
+	content: "";
+	display: block;
+	position: absolute;
+	border-width: 5px;
+	border-style: solid;
+	border-radius: 50%;
+}
+.loader-circle-2:before {
+	width: 70px;
+	height: 70px;
+	border-bottom-color: #009688;
+	border-right-color: #009688;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	animation: loader-circle-2-animation-2 1s linear infinite;
+}
+.loader-circle-2:after {
+	width: 40px;
+	height: 40px;
+	border-bottom-color: #e91e63;
+	border-right-color: #e91e63;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	top: 22%;
+	left: 22%;
+	animation: loader-circle-2-animation 0.85s linear  infinite;
+}
+@keyframes loader-circle-2-animation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
+}
+@keyframes loader-circle-2-animation-2 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
     </style>
 </head>
 
@@ -42,152 +197,83 @@
         <h1>Expenses</h1>
     </header>
     <main>
-        <form>
-            <div class="input-field">
-                <label for="amount">Expense Amount</label>
-                <input type="number" id="amount" name="amount" required>
+        <div class="center-body">
+            <div class="loader-circle-2"></div>
             </div>
-            <div class="input-field">
-                <label for="des">Description</label>
-                <input type="text" id="des" name="description" required>
-            </div>
-            <div class="input-field">
-                <label for="category">Choose a category</label>
-                <select name="category" id="category">
-                    <option value="food">Food</option>
-                    <option value="stationary">Stationary</option>
+        <div class="canvas">
+            <canvas id="oilChart" height="200" style="color: wheat;"></canvas>
+        </div>
+        <div class="flex">
+
+            <div style="width: 55%;">
+                <form>
+                    <div class="input-field">
+                        <label for="amount">Expense Amount</label>
+                        <input type="number" id="amount" name="amount" min="0" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="des">Description</label>
+                        <input type="text" id="des" name="description" required>
+                    </div>
+                    <div class="input-field">
+                        <label for="category">Choose a category</label>
+                        <ul name="category" id="category">
+                            <!-- <div value="food">
+                        <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg" alt="food">
+                    </option> -->
+                            <li value="food" class="li-category"><img
+                                    src="https://i.ibb.co/tmrW0qs/undraw-Eating-together-re-ux62.png" alt="food"
+                                    height="50">
+                                <p>Food</p>
+                            </li>
+                            <li value="shopping" class="li-category"><img
+                                    src="https://i.ibb.co/6Jycs6D/undraw-Shopping-Bags-tdby.png" alt="food" height="50">
+                                <p>Shopping</p>
+                            </li>
+                            <li value="travelling" class="li-category"><img
+                                    src="https://i.ibb.co/HF6MRdM/undraw-Travelers-re-y25a.png" alt="food" height="50">
+                                <p>Travelling</p>
+                            </li>
+                            <li value="bills" class="li-category"><img
+                                    src="https://i.ibb.co/9gWx09g/undraw-Online-payments-re-y8f2.png" alt="food"
+                                    height="50">
+                                <p>Bills</p>
+                            </li>
+                            <li value="other" class="li-category"><img
+                                    src="https://i.ibb.co/sqXfNk0/undraw-Investing-re-bov7.png" alt="food" height="50">
+                                <p>Others</p>
+                            </li>
+                            <!-- <option value="stationary">Stationary</option>
                     <option value="grocery">Grocery</option>
                     <option value="fashion">Fashion</option>
-                    <option value="other">Other</option>
-                </select>
+                    <option value="other">Other</option> -->
+                        </ul>
+                    </div>
+                    <div class="input-field">
+                        <input type="submit">
+                    </div>
+                    <div class="input-field">
+                        <input type="button" id="razorpay" value="Buy Premium">
+                    </div>
+                    <div class="input-field">
+                        <p id="error"></p>
+                    </div>
+                </form>
             </div>
-            <div class="input-field">
-                <input type="submit">
-            </div>
-            <div class="input-field">
-                <input type="button" id="razorpay" value="Buy Premium">
-            </div>
-            <div class="input-field">
-                <p id="error"></p>
-            </div>
-        </form>
-    </main>
-    <ul>
+            <div style="width: 38%;">
+                <ul id="ulExp">
 
-    </ul>
+                </ul>
+            </div>
+        </div>
+    </main>
 </body>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
-<script>
-    console.log(window.location.href);
-    const ul = document.querySelector('ul');
-    const form = document.querySelector('form');
-    const razorpay = document.getElementById('razorpay');
-    window.onload = () => {
-        axios.get('http://localhost:3600/expense/all', {
-            headers: {
-                'token': localStorage.getItem('token')
-            }
-        })
-            .then(result => {
-                console.log(result.data.result);
-                getExpense(result.data.result);
-                if(!result.data.isPremium){
-                    razorpay.style.display = 'inline';
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    };
-    function getExpense(expenses) {
-        for (expense of expenses) {
-            let li = document.createElement('li');
-            li.innerHTML = `${expense.amount} Rs of 
-            ${expense.description} in the category of 
-            ${expense.category} <button id=${expense.id}>Delete<button>`;
-            li.id = `li-${expense.id}`;
-            ul.appendChild(li);
-            document.getElementById(expense.id).onclick = (e) => {
-                removeExpense(e.target.id);
-            };
-        }
-    }
-    function removeExpense(id) {
-        axios.post(`http://localhost:3600/expense/user/${id}`)
-            .then(result => {
-                console.log(result);
-                let i = result.data.id;
-                document.getElementById(`li-${i}`).remove();
-            })
-            .catch(err => {
-                console.log(err);
-                alert('something went wrong');
-            })
-    }
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:3600/expense/create', form, {
-            headers: {
-                'Content-Type': 'application/json',
-                'token': localStorage.getItem('token')
-            }
-        })
-            .then((result) => {
-                console.log(result.data);
-                getExpense([result.data])
-                // alert(result.data.message);
-                document.querySelector('#amount').value = "";
-                document.getElementById('des').value = "";
-            })
-            .catch((err) => {
-                console.log(err);
-                setTimeout(() => {
-                    document.getElementById('error').innerHTML = "";
-                }, 2000)
-                document.getElementById('error').innerHTML = err.response.data.message;
-                document.getElementById('error').style.color = "red";
-                document.querySelector('#amount').value = "";
-                document.getElementById('des').value = "";
-            })
-    })
-    razorpay.addEventListener('click', () => {
-        axios.get('/get-premium', {
-            headers: {
-                'token': localStorage.getItem('token')
-            }
-        })
-            .then(resp => {
-                console.log(resp);
-                rzpPayment(resp.data);
-            })
-            .catch(err => {
-                console.log("Error: ", err)
-            })
-    })
-    function rzpPayment(data) {
-        var options = {
-            "key": 'rzp_test_711AzTPXRhTp3e',
-            'order_id': data.order_id,
-            'handler': (payment) => {
-                console.log(payment);
-                paymentStatus(payment);
-            }
-        }
-        const rzp1 = new Razorpay(options);
-        rzp1.open();
-        rzp1.on('payment.failed', (failed) => {
-            console.log(failed.error.metadata);
-            paymentStatus(failed.error.metadata);
-        })
-    }
-    function paymentStatus(payment) {
-        axios.post('/get-premium/payment', payment, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script src="/expenseF.js">
 </script>
 
 </html>

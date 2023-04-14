@@ -60,7 +60,7 @@ exports.expenseCreate = (req,res,next) => {
         })
         .catch((error) => {
             res.status(405).json({
-                "message": 'User already exist'
+                "message": 'Not added, sorry for inconvenience'
             })
             console.error('Failed to create a new record : ', error);
         });
