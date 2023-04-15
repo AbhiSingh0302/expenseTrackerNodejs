@@ -209,17 +209,20 @@ leaderboard.onclick = () => {
 }
  async function getLeaderboard(){
     try {
-    const leaderBoardList = await axios.get('/premium/show-leaderboard');
+    const leaderBoardList = await axios.get('/premium/show-leaderboard',{
+        headers: {
+            'token': localStorage.getItem('token')
+        }
+    });
     // ulLeaderboard.children.remove();
     const respList = [];
     for(let data of leaderBoardList.data){
-        const allExp = JSON.parse(data.expenses);
         let totalAmount = 0;
-        for(let amountData of allExp){
-            totalAmount += +amountData.amount;
+        if(data.total_cost){
+            totalAmount = data.total_cost
         }
         respList.push({
-            'username': data.user,
+            'username': data.username,
             'total': totalAmount
         })
     }

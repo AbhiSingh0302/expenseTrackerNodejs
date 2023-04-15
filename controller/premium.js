@@ -3,6 +3,7 @@ const Order = require('../models/order');
 const User = require('../models/user');
 const Expense = require('../models/expense');
 const Razorpay = require('razorpay');
+const sequelize = require('../utils/database');
 require('dotenv').config();
 
 exports.getPremium = (req, res, next) => {
@@ -86,23 +87,33 @@ exports.updatePayment = async (req, res, next) => {
 }
 
 exports.showLeaderboard = async (req,res,next) => {
+    console.log(req.headers);
     try {
-    const userAndExpense = await Promise.all([
-        User.findAll(),
-        Expense.findAll()
-    ])
-    const usersData = [];
-    const expenseData = [...userAndExpense[1]];
-    userAndExpense[0].forEach(element => {
-        usersData.push({
-            id: element.id,
-            user: element.username,
-            expenses: JSON.stringify(expenseData.filter(ele => {
-                return ele.expenseId === element.id
-            }))
-        });
-    });
-    res.json(usersData);
+        const isUserPremium = await User.findOne({
+            where:{
+                id: req.headers.expenseid,
+                isPremium: true
+            }
+        })
+        if(isUserPremium){
+    const userAndExpense = await
+        User.findAll({
+            attributes: ['id','username',[sequelize.fn('sum',sequelize.col('amount')),'total_cost']],
+            include: [
+                {
+                    model: Expense,
+                    attributes: []
+                }
+            ],
+            group: ['id'],
+            order: [['total_cost','DESC']]
+        })
+    res.json(userAndExpense);
+        }else{
+            res.json({
+                'message': 'Not a premium user'
+            })
+        }
 } catch (error) {
      res.status(404).json(error);   
 }

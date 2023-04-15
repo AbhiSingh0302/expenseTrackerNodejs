@@ -10,6 +10,6 @@ router.get('/get-premium',premiumMiddleware.authorization,PremiumController.getP
 
 router.post('/get-premium/payment',PremiumController.updatePayment);
 
-router.get('/premium/show-leaderboard',PremiumController.showLeaderboard);
+router.get('/premium/show-leaderboard',premiumMiddleware.authorization,PremiumController.showLeaderboard);
 
 module.exports = router;
