@@ -18,6 +18,9 @@ const user = sequelize.define("expenses", {
     },
     isPremium: {
         type: Sequelize.DataTypes.BOOLEAN
+    },
+    total_cost: {
+        type: Sequelize.DataTypes.INTEGER
     }
  },{
     timestamps: false

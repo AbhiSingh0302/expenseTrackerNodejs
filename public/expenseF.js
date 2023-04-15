@@ -88,7 +88,11 @@ function getExpense(expenses) {
 
 }
 function removeExpense(id) {
-    axios.post(`http://localhost:3500/expense/user/${id}`)
+    axios.post(`http://localhost:3500/expense/user/${id}`,{
+        headers: {
+            'token': localStorage.getItem('token')
+        }
+    })
         .then(result => {
             console.log(result);
             let i = result.data.id;

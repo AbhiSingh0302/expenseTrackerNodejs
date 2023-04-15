@@ -1,6 +1,7 @@
 const path = require('path');
 const User = require('../models/user');
 const expense = require('../models/expense');
+const user = require('../models/user');
 
 exports.expensePage = (req,res,next) => {
     console.log('expense page');
@@ -16,12 +17,19 @@ exports.expenseAll = (req,res,next) => {
             }
         })
         .then(exp => {
+            let sum=0;
+            exp.forEach(element => {
+                sum += element.amount
+            });
             User.findOne({
                 where:{
                     id: req.headers.expenseid
                 }
             })
             .then((user) => {
+                user.update({
+                    total_cost: sum
+                })
                 if(user.isPremium){
                     res.status(201).json({
                         'isPremium': true,
@@ -47,33 +55,43 @@ exports.expenseAll = (req,res,next) => {
     }
 }
 
-exports.expenseCreate = (req,res,next) => {
+exports.expenseCreate = async (req,res,next) => {
     try {
-        expense.create({
-            'amount': req.body.amount,
-            'description': req.body.description,
-            'category': req.body.category,
-            'expenseId': req.headers.expenseid
-        })
-        .then(exp => {
-            res.status(201).json(exp)
-        })
-        .catch((error) => {
-            res.status(405).json({
-                "message": 'Not added, sorry for inconvenience'
+        const userWithExpense = await Promise.all([
+            expense.create({
+                'amount': req.body.amount,
+                'description': req.body.description,
+                'category': req.body.category,
+                'expenseId': req.headers.expenseid
+            }),
+            User.findOne({
+                where:{
+                    id: req.headers.expenseid
+                }
             })
-            console.error('Failed to create a new record : ', error);
-        });
+        ])
+        const addUserExp = userWithExpense[0].amount;
+        const previousTotalExp = userWithExpense[1].total_cost;
+        await userWithExpense[1].update({
+            total_cost: previousTotalExp + +addUserExp
+        })
+        res.status(201).json(userWithExpense[0])
     } catch (error) {
-        res.status(404).json(error);
+        res.status(404).json({
+            "message": 'Not added, sorry for inconvenience'
+        });
     }
 }
 
 exports.expenseDelete = async (req,res,next) => {
     try {
-        console.log(req.params);
         const id = req.params.id;
         const exp = await expense.findByPk(id);
+        const UserExp = await user.findByPk(exp.expenseId);;
+        const deleteUserExp = UserExp.total_cost - exp.amount;
+        await UserExp.update({
+            total_cost: deleteUserExp
+        })
         if(exp){
             await exp.destroy();
             res.status(201).json(req.params)

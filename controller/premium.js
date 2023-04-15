@@ -96,18 +96,7 @@ exports.showLeaderboard = async (req,res,next) => {
             }
         })
         if(isUserPremium){
-    const userAndExpense = await
-        User.findAll({
-            attributes: ['id','username',[sequelize.fn('sum',sequelize.col('amount')),'total_cost']],
-            include: [
-                {
-                    model: Expense,
-                    attributes: []
-                }
-            ],
-            group: ['id'],
-            order: [['total_cost','DESC']]
-        })
+    const userAndExpense = await User.findAll({})
     res.json(userAndExpense);
         }else{
             res.json({
