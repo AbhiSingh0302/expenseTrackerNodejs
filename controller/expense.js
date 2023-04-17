@@ -2,6 +2,7 @@ const path = require('path');
 const User = require('../models/user');
 const expense = require('../models/expense');
 const user = require('../models/user');
+const sequelize = require('../utils/database');
 
 exports.expensePage = (req,res,next) => {
     console.log('expense page');
@@ -57,19 +58,25 @@ exports.expenseAll = (req,res,next) => {
 
 exports.expenseCreate = async (req,res,next) => {
     try {
+        const t = await sequelize.transaction();
         const userWithExpense = await Promise.all([
             expense.create({
                 'amount': req.body.amount,
                 'description': req.body.description,
                 'category': req.body.category,
                 'expenseId': req.headers.expenseid
+            },
+            {
+                transaction: t
             }),
             User.findOne({
-                where:{
+                whre:{
                     id: req.headers.expenseid
-                }
+                },
+                transaction: t
             })
         ])
+        await t.commit();
         const addUserExp = userWithExpense[0].amount;
         const previousTotalExp = userWithExpense[1].total_cost;
         await userWithExpense[1].update({
@@ -77,6 +84,7 @@ exports.expenseCreate = async (req,res,next) => {
         })
         res.status(201).json(userWithExpense[0])
     } catch (error) {
+        await t.rollback();
         res.status(404).json({
             "message": 'Not added, sorry for inconvenience'
         });
@@ -85,9 +93,11 @@ exports.expenseCreate = async (req,res,next) => {
 
 exports.expenseDelete = async (req,res,next) => {
     try {
+        const t = await sequelize.transaction();
         const id = req.params.id;
-        const exp = await expense.findByPk(id);
-        const UserExp = await user.findByPk(exp.expenseId);;
+        const exp = await expense.findByPk(id,{transaction: t});
+        const UserExp = await user.findByPk(exp.expenseId,{transaction: t});
+        await t.commit();
         const deleteUserExp = UserExp.total_cost - exp.amount;
         await UserExp.update({
             total_cost: deleteUserExp
@@ -99,6 +109,7 @@ exports.expenseDelete = async (req,res,next) => {
             throw new Error('Something went wrong');
         }
     } catch (error) {
+        await t.rollback();
         res.json(error);
     }
 }

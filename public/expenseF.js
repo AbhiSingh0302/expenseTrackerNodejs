@@ -107,7 +107,7 @@ function removeExpense(id) {
 form.addEventListener('submit', (e) => {
     document.getElementById('selected').removeAttribute('id');
     console.log(amount.value);
-    // e.preventDefault();
+    e.preventDefault();
     axios.post('http://localhost:3500/expense/create', {
         'amount': amount.value,
         'description': des.value,
@@ -131,7 +131,7 @@ form.addEventListener('submit', (e) => {
             if(ul.children){
                 ul.children.remove();
             }
-            onLoadGet();
+            // onLoadGet();
         })
         })
         .catch((err) => {
