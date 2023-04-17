@@ -137,7 +137,7 @@
                 <label for="password">Enter Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <div class="input-field">
+            <div class="input-field" style="display: flex; justify-content: space-around;">
                 <a href="/">New User!! SignUp</a>
                 <a id="myBtn"> Forgot Password </a>
             </div>
@@ -159,8 +159,8 @@
                 <form action="/password/forgotpassword" id="forgot-password-form" method="post" style="padding: 1rem 0; margin: 0;width: 100%;"  >
                     <span class="close">&times;</span>
                     <h3 style="text-align: center;">Enter your email id</h3>
-                    <input type="email" name="email">
-                    <input type="submit" value="Submit">
+                    <input type="email" name="email" id="forget-email" required>
+                    <input type="submit" value="Submit" id="forgot-password-submit">
                 </form>
             </div>
 
@@ -225,13 +225,24 @@ window.onclick = function(event) {
   }
 }
 const forgotPasswordForm = document.getElementById('forgot-password-form');
-forgotPasswordForm.addEventListener('click',(e) => {
+const forgotPasswordButton = document.getElementById('forgot-password-submit');
+forgotPasswordButton.addEventListener('click',async (e) => {
+    try {
     e.preventDefault();
-    axios.post('/password/forgotpassword',forgotPasswordForm,{
+    const forgetPass = await axios.post('/password/forgotpassword',forgotPasswordForm,{
         headers: {
             'Content-Type': 'application/json'
         }
     })
+    console.log(forgetPass.data)
+    if(forgetPass.data.messageId){
+        alert('Successfully Sent');
+        document.getElementById('forget-email').value = "";
+        modal.style.display = "none";
+    }
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 </script>
