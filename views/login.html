@@ -12,11 +12,13 @@
             margin: 0;
             padding: 0;
         }
-        body{
+
+        body {
             background-image: url('https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
             background-size: cover;
             font-family: 'Anuphan', sans-serif;
         }
+
         header {
             text-align: center;
             background-color: #64aaef;
@@ -24,6 +26,7 @@
             margin-bottom: 2rem;
             color: white;
         }
+
         form {
             text-align: center;
             background-color: #babccf9c;
@@ -32,6 +35,7 @@
             margin: 4rem auto;
             border-radius: 15px;
         }
+
         a {
             color: #ffc710;
         }
@@ -48,13 +52,15 @@
             color: white;
             font-size: 15px;
         }
-        input[type="submit"]:hover{
+
+        input[type="submit"]:hover {
             color: black;
             background-color: aliceblue;
             cursor: pointer;
         }
-        input{
-            padding :3px;
+
+        input {
+            padding: 3px;
         }
 
         label {
@@ -62,8 +68,57 @@
             font-size: 17px;
             margin-right: 5px;
         }
-        .input-field{
+
+        .input-field {
             margin-bottom: 1rem;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -84,6 +139,7 @@
             </div>
             <div class="input-field">
                 <a href="/">New User!! SignUp</a>
+                <a id="myBtn"> Forgot Password </a>
             </div>
             <div class="input-field">
                 <input type="submit">
@@ -92,39 +148,92 @@
                 <p id="error"></p>
             </div>
         </form>
+
+        <!-- Trigger/Open The Modal -->
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <form action="/password/forgotpassword" id="forgot-password-form" method="post" style="padding: 1rem 0; margin: 0;width: 100%;"  >
+                    <span class="close">&times;</span>
+                    <h3 style="text-align: center;">Enter your email id</h3>
+                    <input type="email" name="email">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+
+        </div>
     </main>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
 <script>
     const form = document.querySelector('form');
-    form.addEventListener('submit',(e)=>{
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
-        axios.post('/login/user',form,{
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+        axios.post('/login/user', form, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
             .then((result) => {
                 console.log(result.data.token);
                 alert("User successfully logged in");
                 document.querySelector('#email').value = "";
                 document.getElementById('password').value = "";
-                localStorage.setItem('token',result.data.token);
-                expensePage();      
+                localStorage.setItem('token', result.data.token);
+                expensePage();
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.log(err);
                 setTimeout(() => {
                     document.getElementById('error').innerHTML = "";
-                },2000)
+                }, 2000)
                 document.getElementById('error').innerHTML = err.response.data.message;
                 document.getElementById('error').style.color = "red";
                 document.querySelector('#email').value = "";
                 document.getElementById('password').value = "";
             })
     })
-    function expensePage (){
+    function expensePage() {
         window.location.href = "/expense";
     }
+    // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+const forgotPasswordForm = document.getElementById('forgot-password-form');
+forgotPasswordForm.addEventListener('click',(e) => {
+    e.preventDefault();
+    axios.post('/password/forgotpassword',forgotPasswordForm,{
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+})
+
 </script>
+
 </html>
