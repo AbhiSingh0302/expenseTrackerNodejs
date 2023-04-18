@@ -7,18 +7,18 @@ const path = require('path');
 const cors = require('cors');
 
 const signUpRouter = require('./routes/signup');
-
 const loginRouter = require('./routes/login');
-
 const expenseUserRouter = require('./routes/userexpense');
-
 const premiumRouter = require('./routes/premium');
+const forgotPasswordRouter = require('./routes/forgotPassword');
 
 const User = require('./models/user');
 
 const Expense = require('./models/expense');
 
 const Order = require('./models/order');
+
+const Forgotpasswordrequests = require('./models/forgetpasswordrequests');
 
 const sequelize = require('./utils/database');
 
@@ -30,12 +30,16 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join('public')));
 
+Forgotpasswordrequests.belongsTo(User);
+User.hasMany(Forgotpasswordrequests);
 
 Expense.belongsTo(User);
 User.hasMany(Expense);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+app.use(forgotPasswordRouter);
 
 app.use(premiumRouter);
 

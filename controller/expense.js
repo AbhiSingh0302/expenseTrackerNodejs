@@ -70,7 +70,7 @@ exports.expenseCreate = async (req,res,next) => {
                 transaction: t
             }),
             User.findOne({
-                whre:{
+                where:{
                     id: req.headers.expenseid
                 },
                 transaction: t
