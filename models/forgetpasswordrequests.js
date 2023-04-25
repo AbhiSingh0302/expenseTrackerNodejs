@@ -11,8 +11,6 @@ const forgotpasswordrequests = sequelize.define("forgotpasswordrequests", {
     isActive: {
         type: Sequelize.DataTypes.BOOLEAN
     }
- },{
-    timestamps: false
  });
 
  module.exports = forgotpasswordrequests;

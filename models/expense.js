@@ -15,8 +15,6 @@ const expense = sequelize.define("userexpenses", {
         type: Sequelize.DataTypes.STRING,
         allowNull: false
     }
- },{
-    timestamps: false
  });
 
  module.exports = expense;

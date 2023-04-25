@@ -22,8 +22,6 @@ const user = sequelize.define("expenses", {
     total_cost: {
         type: Sequelize.DataTypes.INTEGER
     }
- },{
-    timestamps: false
  });
 
  module.exports = user;

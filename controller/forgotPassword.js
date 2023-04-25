@@ -11,9 +11,10 @@ const User = require('../models/user');
 const sequelize = require('../utils/database');
 
 exports.forgotPassword = async (req, res, next) => {
+    const t = await sequelize.transaction();    
     try {
-        const t = await sequelize.transaction();    
         const {email} = req.body;
+        console.log(email)
         const user = await User.findOne({
             where:{
                 email: email
@@ -47,7 +48,12 @@ exports.forgotPassword = async (req, res, next) => {
                 subject: 'Regarding forgot password request',
                 htmlContent: `
                 <h1 style="text-align: center;">Reset Password</h1>
-                <a href='http://localhost:3500/password/resetpassword/${id}'>Click Here</a>
+                <p>
+                There was a request to change your password!
+                If you did not make this request then please ignore this email.
+                Otherwise, please click this link to change your password: </p>
+                <a href='http://localhost:3500/password/resetpassword/${id}' style="text-align: center; border: none;
+                border-radius: 4px; padding: 5px 15px; background-color: blue; margin: 0px 45%; color: white; text-decoration: none;">Click Here</a>
                 `
             })
             if(sendMail){
@@ -75,8 +81,7 @@ exports.resetPassword = async(req,res,next) => {
     })
     console.log(forgetPassReq)
     if(forgetPassReq){
-        res.redirect('/login')
-        // res.sendFile(path.join(__dirname,'../','views','resetpassword.html'));
+        res.sendFile(path.join(__dirname,'../','views','resetpassword.html'));
     }else{
         throw new Error('Something is not right');
     }    

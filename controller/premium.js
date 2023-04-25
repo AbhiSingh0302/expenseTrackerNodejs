@@ -96,14 +96,25 @@ exports.showLeaderboard = async (req,res,next) => {
             }
         })
         if(isUserPremium){
-    const userAndExpense = await User.findAll({})
+    const userAndExpense = await User.findAll();
     res.json(userAndExpense);
         }else{
-            res.json({
-                'message': 'Not a premium user'
-            })
+            throw new Error('Not a premium user');
         }
 } catch (error) {
      res.status(404).json(error);   
 }
+}
+
+exports.getExpense = async (req,res,next) => {
+    try {
+    const expense = await Expense.findAll();
+    res.json(expense);
+} catch (error) {
+        res.status(404).json(error)
+}
+}
+
+exports.showPage = (req,res,next) => {
+    res.sendFile(path.join(__dirname,'../','views','premium.html'));
 }

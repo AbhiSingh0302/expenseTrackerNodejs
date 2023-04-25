@@ -14,8 +14,6 @@ const order = sequelize.define("order", {
     purchase_id: {
         type: Sequelize.DataTypes.STRING,
     }
- },{
-    timestamps: false
  });
 
  module.exports = order;

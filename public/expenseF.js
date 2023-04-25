@@ -32,9 +32,10 @@ const formDiv = document.getElementById('form-div');
 const ulExpDiv = document.getElementById('ulExp-div');
 const leaderboardDiv = document.getElementById('leaderboard-container');
 const ulLeaderboard = document.getElementById('leaderboard-ul');
-window.onload = () => {
+window.onload = async() => {
     onLoadGet();
     getLeaderboard();
+    console.log(ul);
 }
 function onLoadGet(){
     axios.get('http://localhost:3500/expense/all', {
@@ -104,11 +105,13 @@ function removeExpense(id) {
             alert('something went wrong');
         })
 }
-form.addEventListener('submit', (e) => {
+
+form.addEventListener('submit', async (e) => {
+    try {
     document.getElementById('selected').removeAttribute('id');
     console.log(amount.value);
     e.preventDefault();
-    axios.post('http://localhost:3500/expense/create', {
+    const createdExpense = await axios.post('http://localhost:3500/expense/create', {
         'amount': amount.value,
         'description': des.value,
         'category': category
@@ -118,33 +121,30 @@ form.addEventListener('submit', (e) => {
             'token': localStorage.getItem('token')
         }
     })
-        .then((result) => {
-            console.log(result.data);
-            // getExpense([result.data])
-            alert(result.data.message);
-            amount.value = "";
-            des.value = "";
-            licategory.forEach(e => {
-                $(document).ready(() => {
-                    $(e).fadeIn("slow");
-            })
-            if(ul.children){
-                ul.children.remove();
-            }
-            // onLoadGet();
-        })
-        })
-        .catch((err) => {
-            // alert(err);
-            // console.log(err);
-            setTimeout(() => {
-                document.getElementById('error').innerHTML = "";
-            }, 2000)
-            document.getElementById('error').innerHTML = err.response.data.message;
-            document.getElementById('error').style.color = "red";
-            amount.value = "";
-            des.value = "";
-        })
+            console.log('created: ',createdExpense);
+            // amount.value = "";
+            // des.value = "";
+            // licategory.forEach(e => {
+            //     $(document).ready(() => {
+            //         $(e).fadeIn("slow");
+            // })
+        // })
+        location.reload();
+            // if(ul.children){
+            //     for(let child of ul.children){
+            //         child.remove();
+            //     };
+            // }
+    } catch (error) {
+        console.log(error);
+        setTimeout(() => {
+            document.getElementById('error').innerHTML = "";
+        }, 2000)
+        document.getElementById('error').innerHTML = "Something is not right";
+        document.getElementById('error').style.color = "red";
+        amount.value = "";
+        des.value = "";
+    }
 })
 razorpay.addEventListener('click', () => {
     axios.get('/get-premium', {
@@ -256,11 +256,11 @@ Chart.defaults.color = '#000';
 
 var oilData = {
     labels: [
-        "Food",
-        "Shopping",
-        "Travelling",
-        "Bills",
-        "Other Expenditure"
+        "Food = "+values[0],
+        "Shopping = "+values[1],
+        "Travelling = "+values[2],
+        "Bills = "+values[3],
+        "Other Expenditure = "+values[4]
     ],
     datasets: [
         {
@@ -289,3 +289,17 @@ var pieChart = new Chart(oilCanvas, {
 }
 });
 }
+
+document.getElementById('download').addEventListener('click', async() => {
+    try {
+        const download = await axios.get('/download',{
+            header:{
+                'token': localStorage.getItem('token')
+            }
+        })
+
+
+    } catch (error) {
+        
+    }
+})
