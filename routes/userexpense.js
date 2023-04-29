@@ -17,6 +17,6 @@ router.post('/expense/create',expenseMiddleware.authorization,expenseController.
 
 router.get('/expense',expenseController.expensePage);
 
-router.get('/download',expenseController.download);
+router.get('/download',expenseMiddleware.authorization,expenseController.download);
 
 module.exports = router;

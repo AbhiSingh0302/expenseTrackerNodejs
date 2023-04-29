@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 exports.authorization = (req,res,next) => {
-    console.log(req.headers)
-    const token = req.headers.token;
     console.log(req.headers.token);
-    console.log(token);
+    const token = req.headers.token;
+    // console.log(req.headers.token);
+    // console.log(token);
     jwt.verify(token,'12345',(err,data) => {
         if(err){
             return res.status(500).json({

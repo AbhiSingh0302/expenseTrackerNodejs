@@ -293,13 +293,18 @@ var pieChart = new Chart(oilCanvas, {
 document.getElementById('download').addEventListener('click', async() => {
     try {
         const download = await axios.get('/download',{
-            header:{
+            headers: {
                 'token': localStorage.getItem('token')
             }
         })
-
+        // console.log('download url: ',download.data.URL);
+        if(download.data.URL){
+            window.open(download.data.URL)
+        }else{
+            console.log('download url is not found');
+        }
 
     } catch (error) {
-        
+        console.log('error: ',error);
     }
 })
