@@ -19,4 +19,6 @@ router.get('/expense',expenseController.expensePage);
 
 router.get('/download',expenseMiddleware.authorization,expenseController.download);
 
+router.get('/expense/pagination/:page',expenseMiddleware.authorization,expenseController.pagination);
+
 module.exports = router;

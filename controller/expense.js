@@ -51,7 +51,7 @@ exports.expensePage = (req, res, next) => {
 }
 
 exports.expenseAll = (req, res, next) => {
-    console.log(req.headers.expenseid);
+    // console.log(req.headers.expenseid);
     try {
         expense.findAll({
             where: {
@@ -152,5 +152,39 @@ exports.expenseDelete = async (req, res, next) => {
     } catch (error) {
         await t.rollback();
         res.json(error);
+    }
+}
+
+exports.pagination = async (req,res) => {
+    try {
+        const page = +req.params.page - 1;
+        // console.log('page: ',page);
+        // console.log('req headers: ',req.headers);
+        const countAll = await expense.findAll({
+            where: {
+                'expenseId': req.headers.expenseid
+            }
+        })
+        const totalProduct = countAll.length;
+        console.log(totalProduct);
+        const perPage = await expense.findAll({
+            where: {
+                'expenseId': req.headers.expenseid
+            },
+            offset: page * 10,
+            limit: 10
+        })
+        res.json({
+            perPage,
+            'success': true,
+            'totalItems': totalProduct,
+            'page': page
+        });
+        
+    } catch (error) {
+        res.status(401).json({
+            error,
+            'success':false
+        })
     }
 }

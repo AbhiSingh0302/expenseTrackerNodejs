@@ -1,9 +1,13 @@
-console.log(window.location.href);
+// console.log(window.location.href);
 const ul = document.querySelector('#ulExp');
 const form = document.querySelector('form');
 const amount = document.getElementById('amount');
 const des = document.getElementById('des');
 const licategory = document.querySelectorAll('.li-category');
+const firstPage = document.getElementById('first-page');
+const lastPage = document.getElementById('last-page');
+// const prevPage = document.getElementById('prev-page');
+// const nextPage = document.getElementById('next-page');
 let food = 0;
 let shopping = 0;
 let travelling = 0;
@@ -12,7 +16,7 @@ let others = 0;
 let category;
 licategory.forEach(el => {
     el.addEventListener('click',() => {
-        console.log(el.getAttribute('value'));
+        // console.log(el.getAttribute('value'));
         category = el.getAttribute('value');
         el.id = 'selected';
         licategory.forEach(e => {
@@ -34,8 +38,72 @@ const leaderboardDiv = document.getElementById('leaderboard-container');
 const ulLeaderboard = document.getElementById('leaderboard-ul');
 window.onload = async() => {
     onLoadGet();
+    pagination(1);
     getLeaderboard();
-    console.log(ul);
+    // console.log(ul);
+}
+
+firstPage.onclick = () => {
+    if(page > 1){
+        page--;
+        ul.innerHTML = '';
+        pagination(page);
+    }else{
+        alert('it is first page');
+    }
+}
+
+lastPage.onclick = () => {
+    if(page < lastPageNum){
+        ul.innerHTML = '';
+        page++;
+        pagination(page);
+    }else{
+        alert('it is last page');
+    }
+}
+
+
+
+function showPagination(expenses){
+    for(expense of expenses){
+        let li = document.createElement('li');
+            li.innerHTML = `${expense.amount} Rs of 
+            ${expense.description} in the category of 
+            ${expense.category} <button id=${expense.id}>Delete</button>`;
+            li.id = `li-${expense.id}`;
+            ul.appendChild(li);
+            document.getElementById(expense.id).onclick = (e) => {
+                removeExpense(e.target.id);
+            };
+    }
+}
+let totalItems;
+let lastPageNum;
+let page = 1;
+async function pagination(page){
+    try {
+    const getPagination = await axios.get('/expense/pagination/'+page,{
+        headers: {
+            'token': localStorage.getItem('token')
+        }
+    });
+    console.log(getPagination.data.totalItems / 10);
+    if(getPagination.data.perPage){
+        showPagination(getPagination.data.perPage);
+        totalItems = getPagination.data.totalItems;
+        if(totalItems/10 == Math.floor(totalItems/10)){
+            lastPageNum = totalItems/10;
+        }else{
+            lastPageNum = Math.floor(totalItems/10) + 1;
+        }
+        console.log(totalItems,lastPageNum);
+    }else{
+        alert('Something is not right');
+    }
+} catch (error) {
+    alert('Something is not right');   
+}
 }
 function onLoadGet(){
     axios.get('http://localhost:3500/expense/all', {
@@ -44,7 +112,7 @@ function onLoadGet(){
         }
     })
         .then(result => {
-            console.log(result);
+            // console.log(result);
             getExpense(result.data.result);
             if(!result.data.isPremium){
                 razorpay.style.display = 'inline';
@@ -54,11 +122,11 @@ function onLoadGet(){
             }
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
         })
 };
 function getExpense(expenses) {
-    console.log(expenses);
+    // console.log(expenses);
     for (expense of expenses) {
         if(expense.category == 'food'){
             food += +expense.amount
@@ -75,15 +143,15 @@ function getExpense(expenses) {
         else{
             others += +expense.amount
         }
-        let li = document.createElement('li');
-        li.innerHTML = `${expense.amount} Rs of 
-        ${expense.description} in the category of 
-        ${expense.category} <button id=${expense.id}>Delete</button>`;
-        li.id = `li-${expense.id}`;
-        ul.appendChild(li);
-        document.getElementById(expense.id).onclick = (e) => {
-            removeExpense(e.target.id);
-        };
+        // let li = document.createElement('li');
+        // li.innerHTML = `${expense.amount} Rs of 
+        // ${expense.description} in the category of 
+        // ${expense.category} <button id=${expense.id}>Delete</button>`;
+        // li.id = `li-${expense.id}`;
+        // ul.appendChild(li);
+        // document.getElementById(expense.id).onclick = (e) => {
+        //     removeExpense(e.target.id);
+        // };
     }
     pieChart(food,shopping,travelling,bills,others);
 
@@ -95,13 +163,13 @@ function removeExpense(id) {
         }
     })
         .then(result => {
-            console.log(result);
+            // console.log(result);
             let i = result.data.id;
             document.getElementById(`li-${i}`).remove();
             location.reload();
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
             alert('something went wrong');
         })
 }
@@ -109,7 +177,7 @@ function removeExpense(id) {
 form.addEventListener('submit', async (e) => {
     try {
     document.getElementById('selected').removeAttribute('id');
-    console.log(amount.value);
+    // console.log(amount.value);
     e.preventDefault();
     const createdExpense = await axios.post('http://localhost:3500/expense/create', {
         'amount': amount.value,

@@ -143,6 +143,19 @@
             border-radius: 15px;
             display: none;
         }
+        #pagination-div{
+            background-color: black;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 2px;
+        }
+        #pagination-div button{
+            width: 2rem;
+        }
+        #pagination-div button:active{
+            background-color: white;
+        }
+
         /*Loader*/
         .center-body {
 	text-align: center;
@@ -276,6 +289,12 @@
                 <ul id="ulExp" class="ulStyle">
 
                 </ul>
+                <div id="pagination-div">
+                    <button id="first-page">&#171;</button>
+                    <!-- <button id="prev-page">1</button>
+                    <button id="next-page">2</button> -->
+                    <button id="last-page">&#187;</button>
+                </div>
             </div>
             <div id="leaderboard-container">
                 <ul id="leaderboard-ul" class="ulStyle">
