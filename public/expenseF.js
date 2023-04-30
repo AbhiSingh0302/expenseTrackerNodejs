@@ -6,6 +6,17 @@ const des = document.getElementById('des');
 const licategory = document.querySelectorAll('.li-category');
 const firstPage = document.getElementById('first-page');
 const lastPage = document.getElementById('last-page');
+const rows = document.getElementById('rows');
+if(localStorage.getItem('rows')){
+    rows.value = localStorage.getItem('rows');
+}
+rows.onchange = () => {
+    console.log(rows.value);
+    localStorage.setItem('rows',rows.value);
+    rowsVal = rows.value;
+    pagination(1);
+}
+let rowsVal = localStorage.getItem('rows');
 // const prevPage = document.getElementById('prev-page');
 // const nextPage = document.getElementById('next-page');
 let food = 0;
@@ -46,7 +57,6 @@ window.onload = async() => {
 firstPage.onclick = () => {
     if(page > 1){
         page--;
-        ul.innerHTML = '';
         pagination(page);
     }else{
         alert('it is first page');
@@ -55,7 +65,6 @@ firstPage.onclick = () => {
 
 lastPage.onclick = () => {
     if(page < lastPageNum){
-        ul.innerHTML = '';
         page++;
         pagination(page);
     }else{
@@ -83,19 +92,20 @@ let lastPageNum;
 let page = 1;
 async function pagination(page){
     try {
-    const getPagination = await axios.get('/expense/pagination/'+page,{
+        ul.innerHTML = '';
+    const getPagination = await axios.get('/expense/pagination/'+page+'?rows='+rowsVal,{
         headers: {
             'token': localStorage.getItem('token')
         }
     });
-    console.log(getPagination.data.totalItems / 10);
+    console.log(getPagination.data.totalItems / rowsVal);
     if(getPagination.data.perPage){
         showPagination(getPagination.data.perPage);
         totalItems = getPagination.data.totalItems;
-        if(totalItems/10 == Math.floor(totalItems/10)){
-            lastPageNum = totalItems/10;
+        if(totalItems/rowsVal == Math.floor(totalItems/rowsVal)){
+            lastPageNum = totalItems/rowsVal;
         }else{
-            lastPageNum = Math.floor(totalItems/10) + 1;
+            lastPageNum = Math.floor(totalItems/rowsVal) + 1;
         }
         console.log(totalItems,lastPageNum);
     }else{
