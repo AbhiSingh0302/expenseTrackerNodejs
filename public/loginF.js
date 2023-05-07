@@ -1,4 +1,5 @@
 const form = document.querySelector('form');
+console.log('loginF');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         axios.post('/login/user', form, {

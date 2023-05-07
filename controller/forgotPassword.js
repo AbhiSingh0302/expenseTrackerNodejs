@@ -14,7 +14,7 @@ exports.forgotPassword = async (req, res, next) => {
     const t = await sequelize.transaction();    
     try {
         const {email} = req.body;
-        console.log(email)
+        // console.log(email)
         const user = await User.findOne({
             where:{
                 email: email
@@ -79,7 +79,7 @@ exports.resetPassword = async(req,res,next) => {
             isActive: true
         }
     })
-    console.log(forgetPassReq)
+    // console.log(forgetPassReq)
     if(forgetPassReq){
         res.sendFile(path.join(__dirname,'../','views','resetpassword.html'));
     }else{
@@ -94,7 +94,7 @@ exports.changePassword = async(req,res,next) => {
     try {
     const {password} = req.body;
     const {id} = req.headers;
-    console.log('id:',id);
+    // console.log('id:',id);
     if(!id){
         throw new Error('Invalid id')
     }

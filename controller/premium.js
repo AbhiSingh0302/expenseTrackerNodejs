@@ -15,8 +15,8 @@ exports.getPremium = (req, res, next) => {
             key_secret: process.env.key_secret,
         });
         instance.orders.create({
-            "amount": 2000,
-            "currency": "INR"
+            "amount": process.env.Amount,
+            "currency": process.env.Currency
         }, (err, order) => {
             if (err) {
                 console.log('err in order: ',err);

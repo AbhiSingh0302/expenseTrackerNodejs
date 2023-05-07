@@ -1,15 +1,15 @@
 const path = require('path');
 const AWS = require('aws-sdk');
-const User = require('../models/user');
 const expense = require('../models/expense');
 const user = require('../models/user');
 const sequelize = require('../utils/database');
+require('dotenv').config();
 
 const uploadToS3 = async (data, filename) => {
     try {
-        const BUCKET_NAME = 'expensetrackernew';
-        const IAM_USER_KEY = 'AKIA4BYCLIP54HLWCHHM';
-        const IAM_USER_SECRET = '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';
+        const BUCKET_NAME = process.env.BUCKET_NAME;
+        const IAM_USER_KEY = process.env.IAM_USER_KEY;
+        const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
         let s3bucket = new AWS.S3({
             accessKeyId: IAM_USER_KEY,
             secretAccessKey: IAM_USER_SECRET,
@@ -17,31 +17,38 @@ const uploadToS3 = async (data, filename) => {
         var params = {
             Bucket: BUCKET_NAME,
             Key: filename,
-            Body: data
+            Body: data,
+            ACL: 'public-read'
         }
-        s3bucket.upload(params,(err, s3response) => {
-            if (err) {
-                console.log('Something went wrong', err);
-            } else {
-                console.log('success ', s3response);
-            }
+        return new Promise((resolve,reject) => {
+            s3bucket.upload(params, (err, s3response) => {
+                    if (err) {
+                        // console.log('Something went wrong', err);
+                        reject(err);
+                    } else {
+                        // console.log('success ', s3response);
+                        resolve(s3response);
+                    }
+            })
         })
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        return error;
     }
 }
 
 exports.download = async (req, res) => {
     try {
-        const expns = await User.findAll();
+        const expns = await user.findAll();
         if (expns) {
             const expnstostring = JSON.stringify(expns);
             const filename = 'Expense.txt';
-            const fileURL = uploadToS3(expnstostring, filename);
+            const fileURL = await uploadToS3(expnstostring, filename);
+            res.json(fileURL);
         }
     } catch (error) {
-res.json(error);
+        res.status(500).json(error);
     }
 }
 
@@ -63,7 +70,7 @@ exports.expenseAll = (req, res, next) => {
                 exp.forEach(element => {
                     sum += element.amount
                 });
-                User.findOne({
+                user.findOne({
                     where: {
                         id: req.headers.expenseid
                     }
@@ -110,7 +117,7 @@ exports.expenseCreate = async (req, res, next) => {
                 {
                     transaction: t
                 }),
-            User.findOne({
+            user.findOne({
                 where: {
                     id: req.headers.expenseid
                 },
@@ -155,7 +162,7 @@ exports.expenseDelete = async (req, res, next) => {
     }
 }
 
-exports.pagination = async (req,res) => {
+exports.pagination = async (req, res) => {
     try {
         const page = +req.params.page - 1;
         const rows = +req.query.rows;
@@ -182,11 +189,11 @@ exports.pagination = async (req,res) => {
             'totalItems': totalProduct,
             'page': page
         });
-        
+
     } catch (error) {
         res.status(401).json({
             error,
-            'success':false
+            'success': false
         })
     }
 }

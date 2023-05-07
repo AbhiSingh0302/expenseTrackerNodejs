@@ -375,9 +375,9 @@ document.getElementById('download').addEventListener('click', async() => {
                 'token': localStorage.getItem('token')
             }
         })
-        // console.log('download url: ',download.data.URL);
-        if(download.data.URL){
-            window.open(download.data.URL)
+        console.log('download url: ',download.data.Location);
+        if(download.data.Location){
+            window.open(download.data.Location);
         }else{
             console.log('download url is not found');
         }
