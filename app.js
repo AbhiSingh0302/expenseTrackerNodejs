@@ -73,7 +73,7 @@ app.use(loginRouter);
 
 app.use(signUpRouter);
 
-sequelize.sync({force: true})
+sequelize.sync()
 .then(() =>{
     app.listen(3500);
 })
