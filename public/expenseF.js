@@ -116,7 +116,7 @@ async function pagination(page){
 }
 }
 function onLoadGet(){
-    axios.get('http://localhost:3500/expense/all', {
+    axios.get('http://65.2.186.16:3500/expense/all', {
         headers: {
             'token': localStorage.getItem('token')
         }
@@ -167,7 +167,7 @@ function getExpense(expenses) {
 
 }
 function removeExpense(id) {
-    axios.post(`http://localhost:3500/expense/user/${id}`,{
+    axios.post(`http://65.2.186.16:3500/expense/user/${id}`,{
         headers: {
             'token': localStorage.getItem('token')
         }
@@ -189,7 +189,7 @@ form.addEventListener('submit', async (e) => {
     document.getElementById('selected').removeAttribute('id');
     // console.log(amount.value);
     e.preventDefault();
-    const createdExpense = await axios.post('http://localhost:3500/expense/create', {
+    const createdExpense = await axios.post('http://65.2.186.16:3500/expense/create', {
         'amount': amount.value,
         'description': des.value,
         'category': category
