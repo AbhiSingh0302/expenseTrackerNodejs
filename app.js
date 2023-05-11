@@ -73,6 +73,10 @@ app.use(loginRouter);
 
 app.use(signUpRouter);
 
+app.use((req,res) => {
+  res.sendFile(path.join(__dirname,'index.html'))
+})
+
 sequelize.sync()
 .then(() =>{
     app.listen(3500);
