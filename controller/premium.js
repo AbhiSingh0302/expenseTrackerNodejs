@@ -116,5 +116,5 @@ exports.getExpense = async (req,res,next) => {
 }
 
 exports.showPage = (req,res,next) => {
-    res.sendFile(path.join(__dirname,'../','views','premium.html'));
+    res.sendFile(path.join(__dirname,'../','public','views','premium.html'));
 }

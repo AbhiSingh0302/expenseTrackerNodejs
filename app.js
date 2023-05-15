@@ -74,7 +74,7 @@ app.use(loginRouter);
 app.use(signUpRouter);
 
 app.use((req,res) => {
-  res.sendFile(path.join(__dirname,'index.html'))
+  res.sendFile(path.join(__dirname,'public','views','index.html'))
 })
 
 sequelize.sync()

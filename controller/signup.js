@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 exports.signupPage = (req, res, next) => {
-    res.sendFile(path.resolve('index.html'));
+    res.sendFile(path.join(__dirname,'../','public','views','index.html'));
 }
 
 exports.userSignup = async (req, res, next) => {

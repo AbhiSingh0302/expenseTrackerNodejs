@@ -81,7 +81,7 @@ exports.resetPassword = async(req,res,next) => {
     })
     // console.log(forgetPassReq)
     if(forgetPassReq){
-        res.sendFile(path.join(__dirname,'../','views','resetpassword.html'));
+        res.sendFile(path.join(__dirname,'../','public','views','resetpassword.html'));
     }else{
         throw new Error('Something is not right');
     }    
