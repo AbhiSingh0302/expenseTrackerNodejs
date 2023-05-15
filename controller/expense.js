@@ -54,7 +54,7 @@ exports.download = async (req, res) => {
 
 exports.expensePage = (req, res, next) => {
     console.log('expense page');
-    res.sendFile(path.join(__dirname, '../', 'views', 'expense.html'));
+    res.sendFile(path.join(__dirname, '../', 'public', 'views', 'expense.html'));
 }
 
 exports.expenseAll = (req, res, next) => {

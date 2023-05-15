@@ -12,7 +12,7 @@ function generateWebTokens(id) {
 }
 
 exports.loginPage = (req, res, next) => {
-    res.sendFile(path.join(__dirname, '../', 'views', 'login.html'));
+    res.sendFile(path.join(__dirname, '../','public', 'views', 'login.html'));
 }
 
 exports.userLogin = async (req, res, next) => {

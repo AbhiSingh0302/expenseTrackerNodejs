@@ -52,7 +52,7 @@ exports.forgotPassword = async (req, res, next) => {
                 There was a request to change your password!
                 If you did not make this request then please ignore this email.
                 Otherwise, please click this link to change your password: </p>
-                <a href='http://localhost:3500/password/resetpassword/${id}' style="text-align: center; border: none;
+                <a href='http://65.2.186.16:3500/password/resetpassword/${id}' style="text-align: center; border: none;
                 border-radius: 4px; padding: 5px 15px; background-color: blue; margin: 0px 45%; color: white; text-decoration: none;">Click Here</a>
                 `
             })
@@ -81,7 +81,7 @@ exports.resetPassword = async(req,res,next) => {
     })
     // console.log(forgetPassReq)
     if(forgetPassReq){
-        res.sendFile(path.join(__dirname,'../','views','resetpassword.html'));
+        res.sendFile(path.join(__dirname,'../','public','views','resetpassword.html'));
     }else{
         throw new Error('Something is not right');
     }    
