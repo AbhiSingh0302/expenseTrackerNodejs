@@ -77,8 +77,6 @@ app.use((req,res) => {
   res.sendFile(path.join(__dirname,'public','views','index.html'))
 })
 
-console.log("hello");
-
 sequelize.sync()
 .then(() =>{
     app.listen(3500);
