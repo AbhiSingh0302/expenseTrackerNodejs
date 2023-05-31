@@ -7,7 +7,7 @@ const sequelize = require('../utils/database');
 require('dotenv').config();
 
 exports.getPremium = (req, res, next) => {
-    console.log(req.headers.expenseid);
+    console.log(req.headers);
     try {
         console.log('hello premium', req.headers.expenseid);
         var instance = new Razorpay({
@@ -87,7 +87,6 @@ exports.updatePayment = async (req, res, next) => {
 }
 
 exports.showLeaderboard = async (req,res,next) => {
-    console.log(req.headers);
     try {
         const isUserPremium = await User.findOne({
             where:{
@@ -95,6 +94,7 @@ exports.showLeaderboard = async (req,res,next) => {
                 isPremium: true
             }
         })
+        console.log("isUser: ",isUserPremium);
         if(isUserPremium){
     const userAndExpense = await User.findAll();
     res.json(userAndExpense);
@@ -102,7 +102,7 @@ exports.showLeaderboard = async (req,res,next) => {
             throw new Error('Not a premium user');
         }
 } catch (error) {
-     res.status(404).json(error);   
+     res.status(404).json({error,"success":false});   
 }
 }
 

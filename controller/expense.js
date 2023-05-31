@@ -40,10 +40,15 @@ const uploadToS3 = async (data, filename) => {
 
 exports.download = async (req, res) => {
     try {
-        const expns = await user.findAll();
+        const expns = await expense.findAll({
+            where:{
+                expenseId: req.headers.expenseid
+            },
+            attributes: ["amount", "description", "category"]
+        })
         if (expns) {
             const expnstostring = JSON.stringify(expns);
-            const filename = 'Expense.txt';
+            const filename = `Expense-${req.headers.expenseid}.txt`;
             const fileURL = await uploadToS3(expnstostring, filename);
             res.json(fileURL);
         }

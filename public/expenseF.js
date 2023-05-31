@@ -116,19 +116,19 @@ async function pagination(page){
 }
 }
 function onLoadGet(){
-    axios.get('http://65.2.186.16:3500/expense/all', {
+    axios.get('/expense/all', {
         headers: {
             'token': localStorage.getItem('token')
         }
     })
         .then(result => {
-            // console.log(result);
             getExpense(result.data.result);
             if(!result.data.isPremium){
                 razorpay.style.display = 'inline';
             }else{
                 premiumUser.style.display = 'inline';
                 leaderboard.style.display = 'inline';
+                document.getElementById("download").style.display = 'inline';
             }
         })
         .catch(err => {
@@ -167,7 +167,7 @@ function getExpense(expenses) {
 
 }
 function removeExpense(id) {
-    axios.post(`http://65.2.186.16:3500/expense/user/${id}`,{
+    axios.post(`/expense/user/${id}`,{
         headers: {
             'token': localStorage.getItem('token')
         }
@@ -189,7 +189,7 @@ form.addEventListener('submit', async (e) => {
     document.getElementById('selected').removeAttribute('id');
     // console.log(amount.value);
     e.preventDefault();
-    const createdExpense = await axios.post('http://65.2.186.16:3500/expense/create', {
+    const createdExpense = await axios.post('/expense/create', {
         'amount': amount.value,
         'description': des.value,
         'category': category
@@ -273,6 +273,7 @@ function paymentStatus(payment) {
         razorpay.style.display = 'none';
         premiumUser.style.display = 'inline';
         leaderboard.style.display = 'inline';
+        document.getElementById("download").style.display = "inline";
     })
     .catch(err => {
         console.log(err);
