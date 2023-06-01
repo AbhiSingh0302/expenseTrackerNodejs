@@ -23,17 +23,16 @@
             text-align: center;
             background-color: #64aaef;
             padding: 10px;
-            margin-bottom: 2rem;
+            /* margin-bottom: 2rem; */
             color: white;
         }
 
         form {
             text-align: center;
             background-color: #babccf9c;
-            width: 23%;
-            padding: 25px 0px;
-            margin: 4rem auto;
-            border-radius: 15px;
+            padding: 25px;
+            /* margin: 4rem auto; */
+            border-radius: 5px;
         }
 
         a {
@@ -61,6 +60,8 @@
 
         input {
             padding: 3px;
+            width: 100%;
+            border-radius: 5px;
         }
 
         label {
@@ -71,6 +72,21 @@
 
         .input-field {
             margin-bottom: 1rem;
+        }
+        .flex-box{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .flex-item{
+            width: 50%;
+            text-align: center;
+        }
+        #welcome{
+            font-size: 40px;
+            color: white;
+            text-align: center;
+            background-color: #2568ad;
         }
 
         /* The Modal (background) */
@@ -128,26 +144,35 @@
         <h1>Log In</h1>
     </header>
     <main>
-        <form>
-            <div class="input-field">
-                <label for="email">Enter your email</label>
-                <input type="email" id="email" name="email" required>
+        <div class="flex-box">
+            <div class="flex-item" id="flex-item-1">
+                <img src="/images/2948808_413222-PDFBA9-942-removebg-preview.png" alt="welcome">
+                <!-- <p id="welcome">Welcome Back</p> -->
+                <p id="welcome">Get back the control of your expense in your hand</p>
             </div>
-            <div class="input-field">
-                <label for="password">Enter Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="input-field" style="display: flex; justify-content: space-around;">
-                <p> New User!! <a href="index.html">SignUp</a> </p>
-                <a id="myBtn"> Forgot Password </a>
-            </div>
-            <div class="input-field">
-                <input type="submit">
-            </div>
-            <div class="input-field">
-                <p id="error"></p>
-            </div>
-        </form>
+            <div style="width: 40%;">
+            <form>
+                <div class="input-field">
+                    <!-- <label for="email">Enter your email</label> -->
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-field">
+                    <!-- <label for="password">Enter Password</label> -->
+                    <input type="password" id="password" placeholder="Password" name="password" required>
+                </div>
+                <div class="input-field">
+                    <input type="submit">
+                </div>
+                <div class="input-field" style="display: flex; justify-content: space-around;">
+                    <p> New User!! <a href="index.html">SignUp</a> </p>
+                    <a id="myBtn"> Forgot Password </a>
+                </div>
+                <div class="input-field">
+                    <p id="error"></p>
+                </div>
+            </form>
+        </div>
+        </div>
 
         <!-- Trigger/Open The Modal -->
 

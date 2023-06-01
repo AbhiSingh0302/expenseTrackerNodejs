@@ -12,9 +12,29 @@
             padding: 0;
         }
 
-        body {
-            background-image: url('https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        .bg-image {
+            /* The image used */
+            background-image: url('/images/pexels-pixabay-259091 (1).jpg');
+
+            /* Add the blur effect */
+            filter: blur(8px);
+            /* -webkit-filter: blur(8px); */
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
             background-size: cover;
+        }
+
+        body {
+            /* background-image: url('https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); */
+            /* background-size: cover; */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
             font-family: 'Anuphan', sans-serif;
         }
 
@@ -127,14 +147,19 @@
             padding: 2px;
             color: white;
         }
-        .ulStyle li:not(:last-child){
+
+        .ulStyle li:not(:last-child) {
             border-bottom: 1px solid #b4ffad;
         }
 
-        #razorpay,#premiumUser,#leaderboard,#download {
+        #razorpay,
+        #premiumUser,
+        #leaderboard,
+        #download {
             display: none;
         }
-        #leaderboard-container{
+
+        #leaderboard-container {
             height: 20vh;
             width: 25%;
             max-height: 40vh;
@@ -143,74 +168,85 @@
             border-radius: 15px;
             display: none;
         }
-        #pagination-div{
+
+        #pagination-div {
             background-color: black;
             text-align: center;
             padding: 1rem;
             border-radius: 2px;
         }
-        #pagination-div button{
+
+        #pagination-div button {
             width: 2rem;
         }
-        #pagination-div button:active{
+
+        #pagination-div button:active {
             background-color: white;
         }
 
         /*Loader*/
         .center-body {
-	text-align: center;
-}
-.loader-circle-2 {
-	position: relative;
-	width: 70px;
-	height: 70px;
-	display: inline-block;
-}
-.loader-circle-2:before,
-.loader-circle-2:after {
-	content: "";
-	display: block;
-	position: absolute;
-	border-width: 5px;
-	border-style: solid;
-	border-radius: 50%;
-}
-.loader-circle-2:before {
-	width: 70px;
-	height: 70px;
-	border-bottom-color: #009688;
-	border-right-color: #009688;
-	border-top-color: transparent;
-	border-left-color: transparent;
-	animation: loader-circle-2-animation-2 1s linear infinite;
-}
-.loader-circle-2:after {
-	width: 40px;
-	height: 40px;
-	border-bottom-color: #e91e63;
-	border-right-color: #e91e63;
-	border-top-color: transparent;
-	border-left-color: transparent;
-	top: 22%;
-	left: 22%;
-	animation: loader-circle-2-animation 0.85s linear  infinite;
-}
-@keyframes loader-circle-2-animation {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(-360deg);
-	}
-}
-@keyframes loader-circle-2-animation-2 {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
+            text-align: center;
+        }
+
+        .loader-circle-2 {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            display: inline-block;
+        }
+
+        .loader-circle-2:before,
+        .loader-circle-2:after {
+            content: "";
+            display: block;
+            position: absolute;
+            border-width: 5px;
+            border-style: solid;
+            border-radius: 50%;
+        }
+
+        .loader-circle-2:before {
+            width: 70px;
+            height: 70px;
+            border-bottom-color: #009688;
+            border-right-color: #009688;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            animation: loader-circle-2-animation-2 1s linear infinite;
+        }
+
+        .loader-circle-2:after {
+            width: 40px;
+            height: 40px;
+            border-bottom-color: #e91e63;
+            border-right-color: #e91e63;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            top: 22%;
+            left: 22%;
+            animation: loader-circle-2-animation 0.85s linear infinite;
+        }
+
+        @keyframes loader-circle-2-animation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes loader-circle-2-animation-2 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -219,9 +255,10 @@
         <h1>Expenses</h1>
     </header>
     <main>
+        <div class="bg-image"></div>
         <div class="center-body">
             <div class="loader-circle-2"></div>
-            </div>
+        </div>
         <div class="canvas">
             <canvas id="oilChart" height="200" style="color: wheat;"></canvas>
         </div>
@@ -305,7 +342,9 @@
             </div>
             <div id="leaderboard-container">
                 <ul id="leaderboard-ul" class="ulStyle">
-                    <li><h2>Leaderboard</h2></li>
+                    <li>
+                        <h2>Leaderboard</h2>
+                    </li>
                 </ul>
             </div>
         </div>
