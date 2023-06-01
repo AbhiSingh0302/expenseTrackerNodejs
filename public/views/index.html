@@ -14,7 +14,8 @@
         }
 
         body {
-            background-image: url('https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            /* background-image: url('https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); */
+            background-image: url('/images/micheile-henderson-ZVprbBmT8QA-unsplash.jpg');
             background-size: cover;
             font-family: 'Ubuntu', sans-serif;
         }
@@ -29,16 +30,20 @@
 
         form {
             text-align: center;
-            background-color: #599c9c;
-            width: 23%;
-            padding: 25px 0px;
+            background-color: aliceblue;
+            width: 40%;
+            padding: 25px 10px;
             margin: 4rem auto;
-            border-radius: 15px;
-            box-shadow: 10px 14px 12px 3px #b38272;
+            border-radius: 5px;
+            /* box-shadow: 10px 14px 12px 3px #b38272; */
         }
 
         a {
             color: #ffc710;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
         }
 
         a:hover {
@@ -46,62 +51,126 @@
         }
 
         input[type="submit"] {
-            padding: 8px 16px;
             border-radius: 5px;
             border: none;
-            background-color: #546876;
             color: white;
+            background-color: #4949ff;
             font-size: 15px;
+            transition: 0.7s;
+            z-index: -1;
         }
-        input[type="submit"]:hover{
+
+        input[type="submit"]:hover {
             color: black;
-            background-color: aliceblue;
+            background-color: #61c2c1;
             cursor: pointer;
         }
 
         .input-field {
-            margin-bottom: 1rem;
-        }
-        input{
-            padding :3px;
+            margin: 1rem auto;
         }
 
-        label {
+        input {
+            padding: 3px;
+            width: 100%;
+            height: 1.5rem;
+        }
+
+        p {
             color: white;
-            font-size: 17px;
-            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        #finance-word {
+            color: rgb(0 255 62);
+            text-decoration: underline;
+        }
+
+        #app-desc {
+            font-size: 20px;
+            margin-top: 2rem;
+            text-align: start;
+            margin-left: 1rem;
+        }
+        .privacy-box{
+            background-color: rgb(240,253,248);
+            border-radius: 5px;
+            margin: 1rem auto;
+            text-align: center;
+        }
+        .privacy-box img{
+            width: 100%;
+        }
+        .privacy-box p{
+            font-size: 25px;
+            color: black;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            /* align-items: center; */
+        }
+
+        .flex-container div {
+            width: 50%;
+            text-align: center;
+        }
+
+        /* Responsive layout - makes a one column layout instead of a two-column layout */
+        @media (max-width: 800px) {
+            .flex-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Sign Up</h1>
+        <h1>Expense Tracker</h1>
     </header>
     <main>
-        <form>
-            <div class="input-field">
-                <label for="name">Enter your name</label>
-                <input type="text" id="name" name="name" required>
+        <div class="flex-container">
+            <div>
+                <p style="font-size: 3rem;">Simple way to manage personal <span id="finance-word">finance</span></p>
+                <p id="app-desc">It takes seconds to record daily transactions. Put them into clear and visualized
+                    categories such as Expense: Food, Shopping or Income: Salary, Gift.</p>
+                <p id="app-desc">One report to give a clear view on your spending patterns. Understand where your money
+                    comes and goes with easy-to-read graphs.</p>
+                    <div class="privacy-box">
+                        <img src="/images/6202729_3198965-removebg-preview.png" alt="data privacy">
+                        <p>100% Secured Data</p>
+                    </div>
             </div>
-            <div class="input-field">
-                <label for="email">Enter your email</label>
-                <input type="email" id="email" name="email" required>
+            <div>
+                <form>
+                    <h2>Sign Up</h2>
+                    <div class="input-field">
+                        <!-- <p>Enter your name</p> -->
+                        <input type="text" id="name" name="name" placeholder="Username" required>
+                    </div>
+                    <div class="input-field">
+                        <!-- <p for="email">Enter your email</p> -->
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-field">
+                        <!-- <p for="password">Enter Password</p> -->
+                        <input type="password" id="password" name="password" placeholder="Create Password" required>
+                    </div>
+                    <div class="input-field">
+                        <input type="submit">
+                    </div>
+                    <div class="input-field">
+                        Already a user <a href="/views/login.html">SignIn</a>
+                    </div>
+                    <div class="input-field">
+                        <p id="error"></p>
+                    </div>
+                </form>
             </div>
-            <div class="input-field">
-                <label for="password">Enter Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="input-field">
-                <a href="/views/login.html">Already User</a>
-            </div>
-            <div class="input-field">
-                <input type="submit">
-            </div>
-            <div class="input-field">
-                <p id="error"></p>
-            </div>
-        </form>
+        </div>
     </main>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
