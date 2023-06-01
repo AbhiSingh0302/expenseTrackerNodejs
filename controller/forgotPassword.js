@@ -21,7 +21,8 @@ exports.forgotPassword = async (req, res, next) => {
             },
             transaction: t  
         })
-            const id = uuids.v4()
+            const id = uuids.v4();
+            console.log("id is ",id);
             const forgotPassReq = await forgotpasswordrequests.create({
                 id: id,
                 isActive: true,
@@ -49,10 +50,11 @@ exports.forgotPassword = async (req, res, next) => {
                 htmlContent: `
                 <h1 style="text-align: center;">Reset Password</h1>
                 <p>
+                Hello,
                 There was a request to change your password!
                 If you did not make this request then please ignore this email.
                 Otherwise, please click this link to change your password: </p>
-                <a href='http://65.2.186.16:3500/password/resetpassword/${id}' style="text-align: center; border: none;
+                <a href='http://35.154.192.158:3500/password/resetpassword/${id}' style="text-align: center; border: none;
                 border-radius: 4px; padding: 5px 15px; background-color: blue; margin: 0px 45%; color: white; text-decoration: none;">Click Here</a>
                 `
             })
