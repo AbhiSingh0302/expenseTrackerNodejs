@@ -99,7 +99,7 @@ exports.showLeaderboard = async (req,res,next) => {
     const userAndExpense = await User.findAll();
     res.json(userAndExpense);
         }else{
-            throw new Error('Not a premium user');
+            throw 'Not a premium user';
         }
 } catch (error) {
      res.status(404).json({error,"success":false});   

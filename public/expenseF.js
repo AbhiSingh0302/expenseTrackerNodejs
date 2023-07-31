@@ -50,7 +50,6 @@ const ulLeaderboard = document.getElementById('leaderboard-ul');
 window.onload = async() => {
     onLoadGet();
     pagination(1);
-    getLeaderboard();
     // console.log(ul);
 }
 
@@ -64,12 +63,12 @@ firstPage.onclick = () => {
 }
 
 lastPage.onclick = () => {
-    if(page < lastPageNum){
+    // if(page < lastPageNum){
         page++;
         pagination(page);
-    }else{
-        alert('it is last page');
-    }
+    // }else{
+    //     alert('it is last page');
+    // }
 }
 
 
@@ -88,7 +87,6 @@ function showPagination(expenses){
     }
 }
 let totalItems;
-let lastPageNum;
 let page = 1;
 async function pagination(page){
     try {
@@ -98,21 +96,17 @@ async function pagination(page){
             'token': localStorage.getItem('token')
         }
     });
-    console.log(getPagination.data.totalItems / rowsVal);
-    if(getPagination.data.perPage){
-        showPagination(getPagination.data.perPage);
-        totalItems = getPagination.data.totalItems;
-        if(totalItems/rowsVal == Math.floor(totalItems/rowsVal)){
-            lastPageNum = totalItems/rowsVal;
-        }else{
-            lastPageNum = Math.floor(totalItems/rowsVal) + 1;
-        }
-        console.log(totalItems,lastPageNum);
+    console.log(getPagination);
+    showPagination(getPagination.data.rows);
+} catch (error) {  
+    if(error.response.data.error=="No expenses"){
+        alert('Last page');
+        console.log(error);
+        page=1; 
+        pagination(page)
     }else{
-        alert('Something is not right');
+        alert('Something went wrong');
     }
-} catch (error) {
-    alert('Something is not right');   
 }
 }
 function onLoadGet(){
@@ -280,6 +274,7 @@ function paymentStatus(payment) {
     })
 }
 leaderboard.onclick = () => {
+    getLeaderboard();
     if(leaderboardDiv.style.display === "block"){
         formDiv.style.width = "55%";
         ulExpDiv.style.width = "35%";

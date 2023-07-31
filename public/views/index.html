@@ -163,7 +163,7 @@
                         <input type="submit">
                     </div>
                     <div class="input-field">
-                        Already a user <a href="/views/login.html">SignIn</a>
+                        Already a user <a href="/views/login.html" id="signIn-link">SignIn</a>
                     </div>
                     <div class="input-field">
                         <p id="error"></p>
@@ -187,6 +187,7 @@
                 console.log(res);
                 setTimeout(() => {
                     document.getElementById('error').innerHTML = "";
+                    document.getElementById('signIn-link').click();
                 }, 2000)
                 document.getElementById('error').innerHTML = "Successfully registered";
                 document.getElementById('error').style.color = "blue";

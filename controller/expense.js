@@ -181,19 +181,18 @@ exports.pagination = async (req, res) => {
         })
         const totalProduct = countAll.length;
         // console.log(totalProduct);
-        const perPage = await expense.findAll({
+        const perPage = await expense.findAndCountAll({
             where: {
                 'expenseId': req.headers.expenseid
             },
             offset: page * rows,
             limit: rows
         })
-        res.json({
-            perPage,
-            'success': true,
-            'totalItems': totalProduct,
-            'page': page
-        });
+        if(perPage.rows.length){
+            res.json(perPage);
+        }else{
+            throw "No expenses";
+        }
 
     } catch (error) {
         res.status(401).json({
