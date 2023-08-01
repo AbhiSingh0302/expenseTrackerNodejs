@@ -170,7 +170,7 @@ exports.expenseDelete = async (req, res, next) => {
 exports.pagination = async (req, res) => {
     try {
         const page = +req.params.page - 1;
-        const rows = +req.query.rows;
+        const rows = req.query.rows==null?5:req.query.rows;
         // console.log('rows: ',rows);
         // console.log('page: ',page);
         // console.log('req headers: ',req.headers);
