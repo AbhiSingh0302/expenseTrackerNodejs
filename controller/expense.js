@@ -169,8 +169,13 @@ exports.expenseDelete = async (req, res, next) => {
 
 exports.pagination = async (req, res) => {
     try {
-        const page = +req.params.page - 1;
-        const rows = req.query.rows==null?5:req.query.rows;
+        const page = Number(req.params.page) - 1;
+        let rows;
+        if(req.query.rows == null){
+            rows = 5;
+        }else{
+            rows = Number(req.query.rows);
+        }
         // console.log('rows: ',rows);
         // console.log('page: ',page);
         // console.log('req headers: ',req.headers);
@@ -185,8 +190,8 @@ exports.pagination = async (req, res) => {
             where: {
                 'expenseId': req.headers.expenseid
             },
-            offset: page * rows,
-            limit: rows
+            offset: Number(page) * Number(rows),
+            limit: Number(rows)
         })
         if(perPage.rows.length){
             res.json(perPage);
